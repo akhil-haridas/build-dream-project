@@ -1,0 +1,136 @@
+.Nheader {
+    background: #ffffff;
+    -webkit-box-shadow: 0px 5px 10px rgba(91, 91, 91, 0.1);
+    box-shadow: 0px 5px 10px rgba(91, 91, 91, 0.1);
+}
+
+.navbarheader__logo {
+    padding: 26px 0;
+    width:180px;
+    height: 80px;
+}
+
+.navbarheader__logo a {
+    display: inline-block;
+}
+
+.navbarheader__menu {
+    padding: 30px 177px 27px;
+}
+
+.navbarheader__menu ul li {
+    list-style: none;
+    display: inline-block;
+    margin-right: 40px;
+    position: relative;
+
+}
+
+.navbarheader__menu ul li.active a:after {
+    -webkit-transform: scale(1);
+    -ms-transform: scale(1);
+    transform: scale(1);
+}
+
+.navbarheader__menu ul li:hover a:after {
+    -webkit-transform: scale(1);
+    -ms-transform: scale(1);
+    transform: scale(1);
+}
+
+.navbarheader__menu ul li a {
+    font-size: 15px;
+    text-transform: uppercase;
+    color: #111111d5;
+    font-weight: 500;
+    display: block;
+    padding: 2px 0;
+    position: relative;
+    font-weight: bold;
+}
+
+.navbarheader__menu ul li a:after {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background: #ca1515;
+    content: "";
+    -webkit-transition: all, 0.5s;
+    -o-transition: all, 0.5s;
+    transition: all, 0.5s;
+    -webkit-transform: scale(0);
+    -ms-transform: scale(0);
+    transform: scale(0);
+}
+
+.navbarheader__right {
+    text-align: right;
+        padding: 20px 0 0px;
+}
+
+.navbarheader__right__auth {
+    display: inline-block;
+    margin-right: 25px;
+}
+
+.navbarheader__right__auth a {
+    font-size: 12px;
+    color: #666666;
+    position: relative;
+    margin-right: 8px;
+}
+
+.navbarheader__right__auth a:last-child {
+    margin-right: 0;
+}
+
+.navbarheader__right__auth a:last-child:after {
+    display: none;
+}
+
+.navbarheader__right__auth a:after {
+    position: absolute;
+    right: -8px;
+    top: -2px;
+    content: "/";
+    font-size: 13px;
+}
+
+.navbarheader__right__widget {
+    display: inline-block;
+}
+
+.navbarheader__right__widget li {
+    list-style: none;
+    display: inline-block;
+    font-size: 18px;
+    color: #111111;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.navbarheader__right__widget li:last-child {
+    margin-right: 0;
+}
+.navbarheader__right__widget li a {
+    font-size: 18px;
+    color: #111111;
+    position: relative;
+}
+
+.navbarheader__right__widget li a .tip {
+    position: absolute;
+    right: -12px;
+    top: -11px;
+    height: 18px;
+    width: 18px;
+    background: #111111;
+    font-size: 10px;
+    font-weight: 500;
+    color: #ffffff;
+    line-height: 18px;
+    text-align: center;
+    border-radius: 50%;
+}

@@ -1,0 +1,214 @@
+/*
+ * Social Network
+ */
+.social-icons.small {
+  margin: 50px auto 0;
+}
+
+.social-icons.small .rectangle {
+  margin: 0 4px;
+  width: 30px;
+  height: 30px;
+  color: #fff;
+}
+
+.social-icons.small .rectangle i {
+  font-size: 14px;
+  -webkit-transition: all 0.25s ease-in-out;
+  -o-transition: all 0.25s ease-in-out;
+  -moz-transition: all 0.25s ease-in-out;
+  transition: all 0.25s ease-in-out;
+}
+
+.social-icons.small .rectangle:hover {
+  background-color: #fff;
+}
+
+.social-icons.small .rectangle:hover i {
+  color: #196fc0;
+}
+
+.social-icons .rectangle {
+  box-shadow: none;
+  display: inline-block;
+}
+
+/* Image responsive */
+.img-res {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+}
+
+
+.site-section h2 {
+  font-family: "Varela", sans-serif;
+  margin: 0;
+  font-size: 32px;
+  color: #196fc2;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.section-subtitle {
+  position: relative;
+  font-family: "Varela", sans-serif;
+  margin: 15px 0 0;
+  font-size: 16px;
+  line-height: 16px;
+  color: #666;
+  letter-spacing: 2px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+
+
+
+
+
+/* Section: Team */
+.team {
+  margin-top: 50px;
+}
+
+.team-member {
+  height: 335px;
+  perspective: 1000;
+  -webkit-perspective: 1000;
+  -moz-perspective: 1000;
+  -o-perspective: 1000;
+  -ms-perspective: 1000;
+  transform: perspective(1000px);
+  -webkit-transform: perspective(1000px);
+  -moz-transform: perspective(1000px);
+  -o-transform: perspective(1000px);
+  -ms-transform: perspective(1000px);
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  -o-transform-style: preserve-3d;
+  -ms-transform-style: preserve-3d;
+}
+
+.team-member:hover .flipper {
+  transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
+  -moz-transform: rotateY(180deg);
+  -o-transform: rotateY(180deg);
+  -ms-transform: rotateY(180deg);
+}
+
+.team-member .flipper {
+  -webkit-transition: 0.6s;
+  -o-transition: 0.6s;
+  -moz-transition: 0.6s;
+  transition: 0.6s;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  -o-transform-style: preserve-3d;
+  -ms-transform-style: preserve-3d;
+  position: relative;
+}
+
+.team-member .team-member-front,
+.team-member .team-member-back {
+  height: 335px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -o-backface-visibility: hidden;
+  -ms-backface-visibility: hidden;
+  -webkit-transition: 0.6s;
+  -o-transition: 0.6s;
+  -moz-transition: 0.6s;
+  transition: 0.6s;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  -o-transform-style: preserve-3d;
+  -ms-transform-style: preserve-3d;
+  transform: rotateY(0deg);
+  -webkit-transform: rotateY(0deg);
+  -moz-transform: rotateY(0deg);
+  -o-transform: rotateY(0deg);
+  -ms-transform: rotateY(0deg);
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.team-member .team-member-front {
+  z-index: 2;
+  border: 1px solid #ccc;
+  width: 100%;
+}
+
+.team-member .team-member-front .team-member-thumb {
+  height: 260px;
+  border: 2px solid #cccccc;
+}
+
+.team-member .team-member-front .team-member-thumb img {
+  margin: 0 auto;
+}
+
+.team-member .team-member-front .team-member-front-name {
+  text-align: center;
+  margin: 20px 0 0;
+  font-weight: 600;
+}
+
+.team-member .team-member-back {
+  padding: 0 20px;
+  display: table;
+  background: #196fc2;
+  text-align: center;
+  color: #ffffff;
+  transform: rotateY(-180deg);
+  -webkit-transform: rotateY(-180deg);
+  -moz-transform: rotateY(-180deg);
+  -o-transform: rotateY(-180deg);
+  -ms-transform: rotateY(-180deg);
+  z-index: 5;
+}
+
+.team-member .team-member-back .team-member-info {
+  display: table-cell;
+  vertical-align: middle;
+  margin: 0 auto;
+}
+
+.team-member .team-member-back .team-member-back-name {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.team-member .team-member-back .team-member-back-position {
+  margin: 10px 0 0;
+  font-size: 12px;
+}
+
+.team-member .team-member-back .team-member-back-info {
+  position: relative;
+  margin: 60px 0 0;
+  font-size: 12px;
+}
+
+.team-member .team-member-back .team-member-back-info:before {
+  content: '';
+  position: absolute;
+  top: -30px;
+  left: 0;
+  right: 0;
+  display: block;
+  height: 1px;
+  width: 30px;
+  background-color: #ffffff;
+  margin: 0 auto;
+}

@@ -1,0 +1,11 @@
+.border-2 {
+    border-width: 6px;
+    background: #1e5db140;
+    /* Increase the border width as desired */
+}
+
+.border-blue_gray_100_dd {
+    /* Existing styles for the border color */
+    border-color: #b7b7b79e;
+    /* Replace with your desired border color */
+}

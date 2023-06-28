@@ -1,0 +1,217 @@
+.price {
+    position: relative;
+    width: 100%;
+    padding: 45px 0 15px 0;
+    background: #ffffff;
+}
+
+.price .rowsubs {
+    padding: 0 15px;
+    display: flex;
+    justify-content: center;
+}
+
+.price .col-md-4 {
+    padding: 0;
+}
+
+.price .price-item {
+    position: relative;
+    margin-bottom: 30px;
+    background: #ffffff;
+}
+
+.price .featured-item {
+    box-shadow: 0 0 30px rgba(0, 0, 0, .2);
+    z-index: 1;
+}
+
+.price .price-header,
+.price .price-body,
+.price .price-footer {
+    position: relative;
+    text-align: center;
+}
+
+.price .price-header {
+    padding: 45px 0 30px 0;
+    color: #414141;
+}
+
+.price .price-item.featured-item .price-header {
+    color: #ca1515;
+}
+
+.price .price-title h2 {
+    font-size: 25px;
+    font-weight: 400;
+    text-transform: uppercase;
+}
+
+.price .price-prices h2 {
+    font-size: 45px;
+    font-weight: 700;
+    margin-left: 10px;
+}
+
+.price .price-prices h2 small {
+    position: absolute;
+    font-size: 18px;
+    font-weight: 400;
+    margin-top: 9px;
+    margin-left: -12px;
+}
+
+.price .price-prices h2 span {
+    margin-left: 1px;
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.price .price-item.featured-item h2 {
+    color: #ca1515;
+}
+
+.price .price-body {
+    padding: 0 0 20px 0;
+}
+
+.price .price-description ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.price .price-description ul li {
+    padding: 0 0 20px 0;
+}
+
+.price .price-item .price-action {
+    padding-bottom: 45px;
+}
+
+.price .price-item .price-action .btn {
+    color: #ffffff;
+    background: #414141;
+    box-shadow: inset 0 0 0 50px #414141;
+}
+
+.price .price-item .price-action .btn:hover {
+    color: #414141;
+    background: transparent;
+    box-shadow: inset 0 0 0 0 #414141;
+    border-color: #414141;
+}
+
+.price .price-item.featured-item .price-action .btn {
+    color: #ffffff;
+    background: #ca1515;
+    box-shadow: inset 0 0 0 50px #ca1515;
+}
+
+.price .price-item.featured-item .price-action .btn:hover {
+    color: #ca1515;
+    background: transparent;
+    box-shadow: inset 0 0 0 0 #ca1515;
+    border-color: #ca1515;
+}
+
+.section-header {
+    position: relative;
+    margin-bottom: 45px;
+}
+
+.section-header p {
+    display: inline-block;
+    margin: 0 30px;
+    margin-bottom: 10px;
+    padding-left: 15px;
+    position: relative;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    background: #ffffff;
+}
+
+.section-header p::before {
+    position: absolute;
+    content: "";
+    height: 3px;
+    top: 11px;
+    right: 0;
+    left: -30px;
+    background: #ca1515;
+    z-index: -1;
+}
+
+.section-header p::after {
+    position: absolute;
+    content: "";
+    width: 3px;
+    height: 3px;
+    top: 11px;
+    left: 3px;
+    background: #ca1515;
+    z-index: 1;
+}
+
+.section-header h2 {
+    margin: 0;
+    position: relative;
+    font-size: 45px;
+    font-weight: 700;
+}
+
+@media (max-width: 767.98px) {
+    .section-header h2 {
+        font-size: 30px;
+    }
+}
+
+.btn:focus,
+.form-control:focus {
+    box-shadow: none;
+}
+
+.btn {
+    padding: 12px 25px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: #ffffff;
+    background: #ca1515;
+    border: 2px solid transparent;
+    border-radius: 0;
+    box-shadow: inset 0 0 0 50px #ca1515;
+    transition: ease-out 0.3s;
+    -webkit-transition: ease-out 0.3s;
+    -moz-transition: ease-out 0.3s;
+}
+
+.btn:hover {
+    color: #ca1515;
+    background: transparent;
+    box-shadow: inset 0 0 0 0 #ca1515;
+    border-color: #ca1515;
+}
+
+
+.StripeCheckout {
+    display: inline-block;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    padding: 12px 24px;
+    background-color: #008cdd;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.StripeCheckout:hover {
+    background-color: #0070a1;
+}

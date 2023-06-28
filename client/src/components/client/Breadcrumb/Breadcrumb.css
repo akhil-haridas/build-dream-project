@@ -1,0 +1,36 @@
+.navbarbreadcrumb-option {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    /* background-color: lightgrey; */
+}
+
+.navbarbreadcrumb__links a {
+    font-size: 15px;
+    font-weight: 500;
+    color: #111111;
+    margin-right: 18px;
+    display: inline-block;
+    position: relative;
+    padding-right: 13px;
+}
+
+.navbarbreadcrumb__links a:after {
+    position: absolute;
+    right: -14px;
+    left:-14px;
+    top: 0;
+    content: "";
+    font-family: "FontAwesome";
+}
+
+.navbarbreadcrumb__links a i {
+    margin-right: 5px;
+}
+
+.navbarbreadcrumb__links span {
+    font-size: 15px;
+    font-weight: 500;
+    color: #888888;
+    display: inline-block;
+    padding-left: 1rem;
+}
