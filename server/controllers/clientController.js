@@ -154,7 +154,6 @@ exports.MyAccount = async (req, res) => {
 exports.forgotPassword = async (req, res) => {
   try {
     const { mobile } = req.body;
-
     const user = await User.findOne({ mobile: mobile });
 
     if (!user) {
@@ -173,6 +172,7 @@ exports.forgotPassword = async (req, res) => {
 //Reset Password
 
 exports.Resetpass = async (req, res) => {
+
   try {
     const { password, mobile } = req.body;
     const userRESET = {

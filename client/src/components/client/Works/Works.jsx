@@ -15,26 +15,30 @@ const Works = ({data}) => {
 
   return (
     <section id="portfolio" className="section portfolio-section">
-      <div className="container">
-        <h6 className="section-title text-center">{ data && data.length > 0 ? "My Projects" : "Currently doesn't have any projects!"}</h6>
+      <div className="">
+        {data && data.length > 0 ? (
+          <h6 className="section-title text-center">My Projects</h6>
+        ) : (
+          <h6 className="section-title text-center mb-[-140px] sm:mb-[-110px]">
+            Currently doesn't have any projects!
+          </h6>
+        )}
+
         <h6 className="section-subtitle mb-5 text-center pb-[2rem]">
-          {data&& data.length > 0 ? "New stunning projects for my amazing clients" : ""}
+          {data && data.length > 0
+            ? "New stunning projects for my amazing clients"
+            : ""}
         </h6>
-        { data && data.length > 0 ? (<div className="filters">
-          <a href="#" data-filter=".new" className="active">
-            New
-          </a>
-          <a href="#" data-filter=".advertising">
-            New
-          </a>
-          <a href="#" data-filter=".branding">
-            New
-          </a>
-          <a href="#" data-filter=".web">
-            New
-          </a>
-        </div>) : ""}
-        
+        {data && data.length > 0 ? (
+          <div className="filters">
+            <a href="#" data-filter=".new" className="active">
+              New
+            </a>
+          </div>
+        ) : (
+          ""
+        )}
+
         <div className="portfolio-container pl-[3rem] pr-[3rem]">
           {data.slice(0, displayCount).map((work, index) => (
             <div className={`col-md-6 col-lg-4`} key={index}>

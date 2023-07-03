@@ -30,39 +30,38 @@ const Search = () => {
               </h4>
               <img
                 src="images/img_arrowright.svg"
-                className="h-4 mt-0.5 w-4"
+                className="h-4 mt-0.5 w-4 mt-[7px]"
                 alt="arrowright"
               />
             </div>
           </div>
         </div>
       </div>
-      {/* ...content... */}
-      <div className="bg-white_A700 border border-black_900_1f border-solid flex flex-1 flex-col items-center justify-start p-6 sm:px-5 rounded-[16px] w-full">
-        <div className="flex sm:flex-col flex-row sm:gap-[58px] items-end justify-between mb-[7px] w-[97%] md:w-full">
+      <div className="bg-white_A700 border border-black_900_1f border-solid flex flex-1 flex-col items-center justify-start p-[25px] sm:px-5 rounded-[16px] w-full">
+        <div className="flex sm:flex-col flex-row sm:gap-[58px] items-center justify-between mb-1 w-[98%] md:w-full">
           <img
             src="images/img_image_1.png"
-            className="h-32 md:h-auto mb-1 sm:mt-0 mt-3 object-cover w-32"
+            className="h-32 md:h-auto object-cover w-32"
             alt="image"
           />
           <div
-            className="flex flex-col gap-[11px] items-start justify-start"
+            className="flex flex-col  items-start justify-start"
             style={{ marginLeft: "35px" }}
           >
-            <h4 className="text-gray_900 font-normal text-xl">
+            <h5 className="leading-[24.00px] text-gray_900 w-[67%] sm:w-full font-normal text-[19px]">
               Find Professionals
-            </h4>
-            <h6 className="leading-[24.00px] text-gray_900 w-full font-normal text-base">
+            </h5>
+            <h6 className="leading-[24.00px] mt-[11px] text-gray_900 w-full font-normal text-base">
               Check profiles of verified Carpenters, Contractors, Interior
               Designers & many more service providers
             </h6>
-            <div className="flex flex-row gap-3 items-start justify-start w-[49%] md:w-full">
+            <div className="flex flex-row gap-4 items-start justify-start mt-[15px] w-[59%] md:w-full">
               <h4 className="text-orange_A700 font-normal text-xl">
                 Search Now
               </h4>
               <img
                 src="images/img_arrowright.svg"
-                className="h-4 mt-[5px] w-4"
+                className="h-4 mt-0.5 w-4 mt-[7px]"
                 alt="arrowright"
               />
             </div>

@@ -25,11 +25,26 @@ const SignupPage = () => {
   const [passwordError, setPasswordError] = useState("");
   const [imageError, setImageError] = useState("");
   
-  const nameChangeHandler = (e) => {
-    setUserName(e.target.value);
-  };
+const nameChangeHandler = (e) => {
+  const nameValue = e.target.value;
+  setUserName(nameValue);
+
+  if (nameValue.trim() === "") {
+    setErrmessage("Name cannot be empty");
+  } else {
+    setErrmessage("");
+  }
+};
+
   const mobileChangeHandler = (e) => {
-    setMobile(e.target.value);
+    const mobileValue = e.target.value;
+    setMobile(mobileValue);
+
+    if (mobileValue.length !== 10) {
+      setErrmessage("Mobile number should be 10 digits");
+    } else {
+      setErrmessage("");
+    }
   };
   const passwordChangeHandler = (e) => {
     setPassword(e.target.value);
@@ -49,7 +64,7 @@ const SignupPage = () => {
     const file = event.target.files[0];
 
     if (file) {
-      const allowedExtensions = ["jpg", "jpeg", "png", "gif"];
+      const allowedExtensions = ["jpg", "jpeg", "png", "gif","webp"];
 
       const extension = file.name.split(".").pop().toLowerCase();
 
@@ -108,34 +123,41 @@ const SignupPage = () => {
       });
   };
 
-  const submitHandler = (event) => {
-    event.preventDefault();
+const submitHandler = (event) => {
+  event.preventDefault();
 
-    const formData = new FormData();
+  // Check if any field is empty
+  if (!userName || !password || !mobile || !file) {
+    setErrmessage("Please fill in all fields");
+    return;
+  }
 
-    formData.append("userName", userName);
-    formData.append("password", password);
-    formData.append("mobile", mobile);
-    formData.append("role", "CLIENT");
-    formData.append("image", file);
+  const formData = new FormData();
 
-    Axios.post(`${USERAPI}signup`, formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-      withCredentials: true,
+  formData.append("userName", userName);
+  formData.append("password", password);
+  formData.append("mobile", mobile);
+  formData.append("role", "CLIENT");
+  formData.append("image", file);
+
+  Axios.post(`${USERAPI}signup`, formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+    withCredentials: true,
+  })
+    .then((response) => {
+      const result = response.data;
+      console.log(result);
+      if (result.status) {
+        navigate("/login");
+      } else {
+        setErrmessage(result.message);
+      }
     })
-      .then((response) => {
-        const result = response.data;
-        console.log(result);
-        if (result.status) {
-          navigate("/login");
-        } else {
-          setErrmessage(result.message);
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
 
   const inputRef = useRef(null);
 
@@ -203,7 +225,7 @@ const SignupPage = () => {
               style={{ padding: "75px 0px 0px 0px" }}
             >
               {errmessage ? (
-                <span style={{ color: "yellow" }}>{errmessage}</span>
+                <span className="text-red-500">{errmessage}</span>
               ) : (
                 ""
               )}
@@ -347,13 +369,7 @@ const SignupPage = () => {
           </div>
 
           <div className="flex flex-col items-start justify-start sm:m-[] sm:mt-[140px] sm:ml-[18px] w-[53%] sm:w-[95%] md:w-full sm:mt-0">
-            {errmessage ? (
-              <span style={{ color: "yellow" }}>{errmessage}</span>
-            ) : (
-              ""
-            )}
-            {imageError && <p className="text-red-500">{imageError}</p>}
-            {passwordError && <p className="text-red-500">{passwordError}</p>}
+    
             <h5 className="text-gray_500 uppercase font-normal text-[13px]">
               PASSWORD:
             </h5>

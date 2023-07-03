@@ -32,7 +32,7 @@ const navigate = useNavigate()
     
     const submitHandler = (event) => {
         event.preventDefault();
-        console.log('submit')
+
 
       const formData = new FormData();
 

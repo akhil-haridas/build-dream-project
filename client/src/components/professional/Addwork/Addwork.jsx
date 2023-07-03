@@ -16,7 +16,11 @@ const Addwork = () => {
     const reader = new FileReader();
 
     if (file) {
-      if (file.type === "image/*") {
+      if (
+        file.type === "image/jpeg" ||
+        file.type === "image/jpg" ||
+        file.type === "image/webp"
+      ) {
         reader.onloadend = () => {
           setImage(file);
           setFileError("");

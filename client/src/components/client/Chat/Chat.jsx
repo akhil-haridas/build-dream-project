@@ -5,6 +5,7 @@ import { USERAPI } from "utils/api";
 import { useSelector } from "react-redux";
 import io from "socket.io-client";
 import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 const ENDPOINT = "http://localhost:4000";
 
@@ -12,6 +13,7 @@ var socket, selectedChatCompare;
 
 const Chat = () => {
   const userID = useSelector((state) => state.user.userID);
+  const navigate = useNavigate()
   const [chats, setChats] = useState([]);
   const [selectedChat, setSelectedChat] = useState(null);
   const [newMessage, setNewMessage] = useState("");
@@ -45,7 +47,7 @@ const Chat = () => {
         }
       })
       .catch((error) => {
-        console.log(error);
+          navigate("/server-error");
       });
   }, []);
 
@@ -78,7 +80,7 @@ const Chat = () => {
 
       selectedChatCompare = selectedChat;
     } catch (error) {
-      console.log(error);
+      navigate("/server-error");
     }
   };
 
@@ -136,7 +138,7 @@ const Chat = () => {
         setMessages([...messages, newSentMessage]);
         setNewMessage("");
       } catch (error) {
-        console.log(error);
+       navigate("/server-error");
       }
     }
   };

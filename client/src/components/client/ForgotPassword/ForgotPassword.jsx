@@ -44,7 +44,6 @@ const ForgotPassword = () => {
     // Update the OTP value
     const updatedOtp = otp.substr(0, index) + value + otp.substr(index + 1);
     setOtp(updatedOtp);
-    console.log(otp);
 
     // Move focus to the next input
     if (value && index < inputsRef.current.length - 1) {
@@ -70,7 +69,7 @@ const ForgotPassword = () => {
         setShowReset(true);
       })
       .catch((err) => {
-        alert("Wrong code");
+         navigate("/server-error");
       });
   };
 
@@ -87,7 +86,7 @@ const ForgotPassword = () => {
           setFinal(result)
       })
       .catch((err) => {
-        alert(err);
+        navigate("/server-error");
       });
   };
 
@@ -98,9 +97,8 @@ const ForgotPassword = () => {
       { mobile },
       { withCredentials: true }
     ).then((response) => {
-      const result = response.data.userRESET;
-      if (result.status) {
-        console.log(result.status);
+      const result = response.data;
+      if (result.status) {  
         sentOTP();
       } else {
         setErrMessage(result.message);
@@ -150,11 +148,11 @@ const ForgotPassword = () => {
               <ol className="list-unstyled">
                 <li>
                   <span className="text-primary text-medium">1. </span>Fill in
-                  your email address below.
+                  mobile number below.
                 </li>
                 <li>
                   <span className="text-primary text-medium">2. </span>We'll
-                  email you a temporary code.
+                  sent you a temporary code.
                 </li>
                 <li>
                   <span className="text-primary text-medium">3. </span>Use the
@@ -176,7 +174,7 @@ const ForgotPassword = () => {
                 <div className="card-body">
                   <div className="form-group">
                     <label htmlFor="email-for-pass">
-                      Enter your email address
+                      Enter your mobile number
                     </label>
                     <input
                       className="form-control"
@@ -189,8 +187,8 @@ const ForgotPassword = () => {
                       required
                     />
                     <small className="form-text text-muted">
-                      Type in the email address you used when you registered.
-                      Then we'll email a code to this address.
+                      Type in the mobile number you used when you registered.
+                      Then we'll sent a code to this number.
                     </small>
                   </div>
                 </div>
@@ -279,11 +277,11 @@ const ForgotPassword = () => {
               <ol className="list-unstyled">
                 <li>
                   <span className="text-primary text-medium">1. </span>Fill in
-                  your email address below.
+                  your mobile number address below.
                 </li>
                 <li>
                   <span className="text-primary text-medium">2. </span>We'll
-                  email you a temporary code.
+                  sent you a temporary code.
                 </li>
                 <li>
                   <span className="text-primary text-medium">3. </span>Use the

@@ -109,7 +109,7 @@ const RolePage = () => {
               </div>
               <div className="sm:block flex sm:flex-col flex-row md:gap-5 items-center md:items-end sm:items-stretch md:justify-around sm:justify-between justify-start md:ml-[0] ml-[3px] mt-[37px] w-[95%] md:w-full">
                 <h2 className="font-bold text-lg sm:m-[] sm:mt-[-574px] text-center text-white_A700_dd tracking-[2.00px] uppercase">
-                  i’m a Home owner
+                  i need a home
                 </h2>
                 <h2 className="font-bold text-lg sm:m-[] sm:ml-[0] ml-[210px] sm:mt-[254px] text-center text-white_A700_dd tracking-[2.00px] uppercase">
                   i’m a Service provider

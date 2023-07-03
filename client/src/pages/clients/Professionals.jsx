@@ -6,6 +6,7 @@ import Footer from "components/client/Footer/Footer";
 import SelectInput from "components/client/SelectInput/SelectInput";
 import { PROFESSIONALAPI, USERAPI } from "utils/api";
 import Axios from "axios";
+import { useNavigate } from "react-router-dom";
 const Professionals = () => {
    const [locationFilter, setLocationFilter] = useState(null);
    const [categoryFilter, setCategoryFilter] = useState(null);
@@ -13,7 +14,8 @@ const Professionals = () => {
   const [category, setCategory] = useState([]);
   const [location, setLocation] = useState([]);
   const [filter, setFilter] = useState([]);
- const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate()
   const handleLocationChange = (selectedOption) => {
     setLocationFilter(selectedOption);
   };
@@ -28,7 +30,7 @@ const Professionals = () => {
         setCategory(response.data.data);
       })
       .catch((error) => {
-        console.log(error);
+        navigate("/server-error");
       });
   }, []);
 
@@ -43,7 +45,7 @@ const Professionals = () => {
         setData(response.data.DATA);
       })
       .catch((error) => {
-        console.log(error);
+       navigate("/server-error");
       });
   }, []);
 
@@ -53,7 +55,7 @@ const Professionals = () => {
         setLocation(response.data.locationsAndDistricts);
       })
       .catch((error) => {
-        console.log(error);
+        navigate("/server-error");
       });
   }, []);
 
@@ -96,27 +98,29 @@ useEffect(() => {
         <div className="flex flex-col justify-end max-w-[1171px] mx-auto md:px-5 w-full">
           <div className="flex flex-col justify-start md:ml-[0] ml-[49px] mt-[38px] w-[96%] md:w-full">
             <input
-              className="mb-[2rem] w-[50%]"
+              className="mb-[2rem] w-[50%] sm:w-[100%]"
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by name..."
             />
-            <div className="flex flex-row items-center justify-start w-[18%] md:w-full mb-[4rem]">
-              <SelectInput
-                options={locations}
-                onChange={handleLocationChange}
-                placeholder={"Select Location"}
-              />
+            <div className="md:items-center md:justify-start w-full md:mb-4">
+              <div className="w-full md:w-1/2 mb-[25px]">
+                <SelectInput
+                  options={locations}
+                  onChange={handleLocationChange}
+                  placeholder={"Select Location"}
+                />
+              </div>
 
-              <SelectInput
-                options={categoryOptions}
-                onChange={handleCategoryChange}
-                placeholder={"Select Profession"}
-              />
+              <div className="w-full md:w-1/2 mb-[25px]">
+                <SelectInput
+                  options={categoryOptions}
+                  onChange={handleCategoryChange}
+                  placeholder={"Select Profession"}
+                />
+              </div>
             </div>
-
-            <div className="flex-col gap-[26px] grid items-center w-full"></div>
           </div>
         </div>
       </div>
@@ -125,13 +129,18 @@ useEffect(() => {
         style={{ background: "white" }}
         id="team"
       >
-        <div className="container">
+        <div className="sm:w-[95%] sm:ml-[10px]">
           <h2>FIND BEST PROFESSIONALS</h2>
           <p className="section-subtitle">
             <span>This is the team ready to working with you</span>
           </p>
           <div className="team">
             <div className="row flex flex-wrap ml-[15px]">
+              <Profiles data={filter} />
+              <Profiles data={filter} />
+              <Profiles data={filter} />
+              <Profiles data={filter} />
+              <Profiles data={filter} />
               <Profiles data={filter} />
             </div>
           </div>

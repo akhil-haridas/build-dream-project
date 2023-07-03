@@ -1,5 +1,5 @@
 import React ,{useState,useEffect} from 'react'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { USERAPI } from 'utils/api';
 import  Axios  from 'axios';
 import Navbar from "components/client/Navbar/Navbar";
@@ -11,7 +11,7 @@ const ShopProfile = () => {
 
     const { id } = useParams();
     const [data, setData] = useState([]);
-
+const navigate = useNavigate()
     useEffect(() => {
       Axios.get(`${USERAPI}shop?id=${id}`, {
         withCredentials: true,
@@ -21,7 +21,7 @@ const ShopProfile = () => {
           console.log(response.data.DATA);
         })
         .catch((error) => {
-          console.log(error);
+          navigate("/server-error");
         });
     }, []);
   

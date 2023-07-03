@@ -20,7 +20,7 @@ const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const stripe = require("stripe")(process.env.STRIPE_KEY);
 
-//Secure Password
+// Secure Password
 const securePassword = async (password) => {
   try {
     const passwordHash = await bcrypt.hash(password, 10);
@@ -447,8 +447,8 @@ exports.changePass = async (req, res) => {
     const passMatch = await bcrypt.compare(current, user.password);
 
     if (passMatch) {
-      const securePassword = await securePassword(password);
-      user.password = securePassword;
+      const hashedPassword = await securePassword(password);
+      user.password = hashedPassword;
       await user.save();
       return res.status(200).json({ status: true });
     } else {
@@ -491,7 +491,9 @@ exports.socialEdit = async (req, res) => {
 exports.getWork = async (req, res) => {
   try {
     const { id } = req.query;
-    const professional = await Professional.findById({ "works._id": id });
+    console.log(id);
+
+    const professional = await Professional.findOne({ "works._id": id });
 
     if (!professional) {
       return res.status(404).json({ message: "Professional not found" });
@@ -509,6 +511,7 @@ exports.getWork = async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 };
+
 
 exports.editWork = async (req, res) => {
   try {

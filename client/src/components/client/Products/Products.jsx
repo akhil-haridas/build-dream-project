@@ -18,11 +18,13 @@ const Products = ({ data }) => {
           data-wow-delay="0.1s"
         >
           <p>{data && data.length > 0 ? "Available Products" : ""}</p>
-          <h2>
-            {data && data.length > 0
-              ? "Our lastest arrivals"
-              : "Currently doesn't have any products"}
-          </h2>
+          {data && data.length > 0 ? (
+            <h6 className="section-title text-center">My Projects</h6>
+          ) : (
+            <h2 className="section-title text-center mb-[-140px]">
+              Currently doesn't have any products!
+            </h2>
+          )}
         </div>
         <div className="row portfolio-container">
           {data.slice(0, displayCount).map((product, index) => (

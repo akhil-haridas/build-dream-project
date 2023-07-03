@@ -1,70 +1,84 @@
-# Getting Started with Create React App
+# BUILD DREAM CONSTRUCTION GUIDE APP
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+ :: Home Dreamer is a web application built with the MERN (MongoDB, Express.js, React.js, Node.js) stack. It aims 
 
-## Available Scripts
+ to connect clients, professionals, and shops in the home construction industry, providing a platform for clients 
+ 
+ to find professionals and shops based on location, profession, and business type. The application also includes 
+ 
+ features such as real-time chat using Socket.io, Stripe payment integration, and role-based authentication.
 
-In the project directory, you can run:
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### FEATURES
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## User Roles 
 
-### `npm test`
+# Client : 
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Clients can search for professionals and shops based on various filters like location, profession, and business  
 
-### `npm run build`
+type. They can view professional profiles, connect with professionals via chat, and view their recent projects. 
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Clients can also browse shop details, view available products, and send product purchase requests.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+# Professionals: 
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Professionals have separate login and signup functionality. They need to verify their account 
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+through email using a UUID token. Admin approval is required to activate their account. Professionals can update 
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+their profile details, share recent projects, and connect with clients via real-time chat.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+# Shops: 
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Similar to professionals, shops have a separate login and signup process. They also require email verification 
 
-### Code Splitting
+using a UUID token and admin approval. Shops can manage their profile details, list products, and receive product 
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+purchase requests from clients.
 
-### Analyzing the Bundle Size
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+# Admin :  
 
-### Making a Progressive Web App
+The admin has complete control over the application. They can approve professional and shop requests, 
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+manage user accounts, and control all aspects of the platform.
 
-### Advanced Configuration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## SECTIONS
 
-### Deployment
+# Real-time Chat ->  Socket.io is used to enable real-time chat functionality between clients and professionals.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-### `npm run build` fails to minify
+# Stripe Payment Integration ->  Professionals and shops need to purchase a subscription plan to use the application. 
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+# Stripe integration allows secure and convenient payment processing for subscription plans.
+
+# Magazine Section -> Professionals and shops can share their thoughts, ideas, and new products through the magazine section. Users can view and interact with these posts.
+
+# Client Requirements-> Clients can post their home construction requirements, which are sent as notifications to professionals and shops who match the specified criteria.
+
+
+# ACKNOWLEDGEMENTS
+
+ 1.  MongoDB
+ 2.  Express.js
+ 3.  React.js
+ 4.  Node.js
+ 5.  Socket.io
+ 6.  Stripe
+ 7.  Nodemailer
+ 8.  Firebase
+ 9.  Redux
+ 10. Rest API
+
+
+# CONTACT
+
+For any questions or inquiries, please contact me on 4khilharidas@gmail.com
+

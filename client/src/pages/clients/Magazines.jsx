@@ -5,12 +5,13 @@ import Navbar from 'components/client/Navbar/Navbar';
 import React, { useEffect, useState } from 'react'
 import Axios from 'axios'
 import { USERAPI } from 'utils/api';
+import { useNavigate } from 'react-router-dom';
 
 const Magazines = () => {
   const [data, setData] = useState([])
   const [category, setCategory] = useState([])
   const [requirements,setRequirements] = useState([])
-  
+  const navigate = useNavigate()
   useEffect(() => {
     Axios.get(`${USERAPI}getmagazines`, { withCredentials: true })
       .then((response) => {
@@ -19,12 +20,12 @@ const Magazines = () => {
         setRequirements(response.data.requirements);
       })
       .catch((error) => {
-        console.log(error);
+       navigate("/server-error");
       });
   },[])
   return (
     <>
-      <Navbar active={"MAGAZINES"} />
+      <Navbar active={"MAGAZINE"} />
       <Breadcrumb path={["Magazines"]} />
       <MagazinePage
         data={data}

@@ -44,7 +44,7 @@ exports.Login = async (req, res) => {
     const isMatch = await bcrypt.compare(enteredPassword, adminPASS);
 
     if (isMatch) {
-      const token = jwt.sign({ id: "1234567890" }, process.env.JWT_KEY, {
+      const token = jwt.sign({ id: "1234567890" ,role:"admin"}, process.env.JWT_KEY, {
         expiresIn: "30d",
       });
       userLOGIN.status = true;

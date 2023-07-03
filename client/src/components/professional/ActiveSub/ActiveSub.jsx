@@ -15,7 +15,14 @@ const ActiveSub = () => {
           .catch((error) => {
             console.log(error);
           });
-    },[])
+    }, [])
+
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    return date.toLocaleDateString(undefined, options);
+  }
+
   return (
     <main>
       <div className="head-title">
@@ -67,7 +74,7 @@ const ActiveSub = () => {
                       </div>
                       <div className="media">
                         <label>Purchase Date</label>
-                        <p>{data.createdAt}</p>
+                        <p>{formatDate(data.createdAt)}</p>
                       </div>
                       <div className="media">
                         <label>Expiry Date</label>

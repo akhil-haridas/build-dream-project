@@ -24,10 +24,10 @@ const Professional = ({ data }) => {
   };
   return (
     <div className="theme-red">
-      <div className="vg-page page-about" id="about">
-        <div className="container py-5">
-          <div className="row">
-            <div className="col-lg-4 py-3">
+      <div className="vg-page page-about sm:pb-[20px]" id="about">
+        <div className="py-5">
+          <div className="row sm:ml-[35px]">
+            <div className="col-lg-4 sm:w-[83%] py-3">
               <div className="img-place wow fadeInUp">
                 <img
                   src={`http://localhost:4000/uploads/${data.image}`}

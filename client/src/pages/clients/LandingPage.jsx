@@ -8,11 +8,12 @@ import Footer from "components/client/Footer/Footer";
 
 import Axios from "axios";
 import { USERAPI } from "utils/api";
+import { useNavigate } from "react-router-dom";
 
 const Landing = () => {
   const [pro, setPro] = useState([]);
   const [shop, setShop] = useState([]);
-
+const navigate = useNavigate()
   useEffect(() => {
     Axios.get(`${USERAPI}getcategories`, { withCredentials: true })
       .then((response) => {
@@ -22,12 +23,12 @@ const Landing = () => {
         console.log(response.data.shopDATA);
       })
       .catch((error) => {
-        console.log(error);
+        navigate("/server-error");
       });
   }, []);
   return (
     <>
-      <Navbar />
+      <Navbar active={"HOME"} />
       <div className="bg-white_A700 flex flex-col font-rubik items-center justify-end mx-auto w-full">
         <div className="flex flex-col justify-end w-full">
           <Banner />

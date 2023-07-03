@@ -6,7 +6,13 @@ const authJWT = (req, res, next) => {
     if (!token) {
       throw new Error("Authentication failed");
     }
-    next();
+    const decodedToken = jwt.verify(token, process.env.JWT_KEY);
+    if(decodedToken.role === 'admin'){
+      next();
+    } else {
+      throw new Error("Authentication failed");
+    }
+    
   } catch (error) {
     return res.status(401).json({ message: "Authentication failed" });
   }

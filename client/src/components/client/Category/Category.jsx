@@ -13,7 +13,7 @@ const Category = (props) => {
   return (
     <>
       {/* Professional Section */}
-      <h2 className="md:ml-[0] ml-[86px] mr-[871px] mt-[50px] text-gray_900 font-normal md:text-3xl sm:text-[28px] text-[32px]">
+      <h2 className="md:ml-[0] sm:w-[100%] sm:pl-[30px] ml-[86px] mr-[871px] mt-[50px] text-gray_900 font-normal md:text-3xl sm:text-[28px] text-[32px]">
         {props.title}
       </h2>
       {/* professional content */}
@@ -24,10 +24,7 @@ const Category = (props) => {
             className="category border border-black_900_1f border-solid flex flex-1 flex-col gap-[15px] items-center justify-start p-1.5 rounded-[16px] w-full"
           >
             <img
-              src={`http://localhost:4000/uploads/${data.image.replace(
-                "\\",
-                "/"
-              )}`}
+              src={`http://localhost:4000/uploads/${data.image}`}
               className="h-[151px] md:h-auto object-cover rounded-[9px] w-full"
               alt={data.name}
             />
