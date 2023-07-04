@@ -1,4 +1,4 @@
-export const USERAPI = "http://localhost:4000/";
-export const PROFESSIONALAPI = "http://localhost:4000/professional/";
-export const SHOPAPI = "http://localhost:4000/shop/";
-export const AdminAPI = "http://localhost:4000/admin/";
+export const USERAPI = "https://build-dream-server.onrender.com/";
+export const PROFESSIONALAPI = "https://build-dream-server.onrender.com/professional/";
+export const SHOPAPI = "https://build-dream-server.onrender.com/shop/";
+export const AdminAPI = "https://build-dream-server.onrender.com/admin/";
