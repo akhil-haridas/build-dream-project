@@ -33,7 +33,7 @@ const Profiles = ({ data }) => {
               >
                 <div className="team-member-thumb">
                   <img
-                    src={imageAPI`${profile.image}`}
+                    src={`${imageAPI}${profile.image}`}
                     className="img-res"
                     alt=""
                   />

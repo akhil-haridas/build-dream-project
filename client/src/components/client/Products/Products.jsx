@@ -35,7 +35,10 @@ const Products = ({ data }) => {
             >
               <div className="portfolio-wrap">
                 <div className="portfolio-img">
-                  <img src={imageAPI`${product.image}`} alt="Image" />
+                  <img
+                    src={`${imageAPI}${product.image}`}
+                    alt="Image"
+                  />
                 </div>
                 <div className="portfolio-text">
                   <h3>
@@ -43,7 +46,7 @@ const Products = ({ data }) => {
                   </h3>
                   <a
                     className="btn"
-                    href={imageAPI`${product.image}`}
+                    href={`${imageAPI}${product.image}`}
                     data-lightbox="portfolio"
                   >
                     +

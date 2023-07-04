@@ -30,7 +30,7 @@ const Professional = ({ data }) => {
             <div className="col-lg-4 sm:w-[83%] py-3">
               <div className="img-place wow fadeInUp">
                 <img
-                  src={imageAPI`${data.image}`}
+                  src={`${imageAPI}${data.image}`}
                   alt="profile photo"
                 />
               </div>

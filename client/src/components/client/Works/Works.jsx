@@ -50,10 +50,7 @@ const Works = ({data}) => {
                   alt={work.title}
                 />
                 <div className="content-holder">
-                  <a
-                    className="img-popup"
-                    src={imageAPI`${work.image}`}
-                  />
+                  <a className="img-popup" src={`${imageAPI}${work.image}`} />
                   <div className="text-holder">
                     <h6 className="title">{work.title}</h6>
                     <p className="subtitle">{work.description}RS</p>
