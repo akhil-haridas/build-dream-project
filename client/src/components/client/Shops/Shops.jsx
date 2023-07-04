@@ -32,7 +32,7 @@ const ShopProfile = ({data}) => {
               <div className="team-member-front">
                 <div className="team-member-thumb">
                   <img
-                    src={`${imageAPI}${data.image}`}
+                    src={`${imageAPI}${obj.image}`}
                     alt="profile photo"
                     className="img-res"
                   />
