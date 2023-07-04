@@ -23,7 +23,8 @@ const navigate = useNavigate()
         console.log(response.data.shopDATA);
       })
       .catch((error) => {
-        navigate("/server-error");
+        console.log(error)
+        // navigate("/server-error");
       });
   }, []);
   return (
