@@ -1,6 +1,7 @@
 import React,{useState} from 'react'
 import './Shops.css'
 import { useNavigate } from 'react-router-dom';
+import { imageAPI } from 'utils/api';
 const ShopProfile = ({data}) => {
   const navigate = useNavigate();
   const [displayCount, setDisplayCount] = useState(4);
@@ -31,7 +32,7 @@ const ShopProfile = ({data}) => {
               <div className="team-member-front">
                 <div className="team-member-thumb">
                   <img
-                    src={`http://localhost:4000/uploads/${obj.image}`}
+                    src={imageAPI`${data.image}`}
                     alt="profile photo"
                     className="img-res"
                   />

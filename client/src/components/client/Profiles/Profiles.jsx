@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Profiles.css";
+import { imageAPI } from "utils/api";
 
 const Profiles = ({ data }) => {
   const navigate = useNavigate();
@@ -31,9 +32,8 @@ const Profiles = ({ data }) => {
                 style={{ boxShadow: "0px 0px 6px rgba(0, 0, 0, 1.1)" }}
               >
                 <div className="team-member-thumb">
-                
                   <img
-                    src={`http://localhost:4000/uploads/${profile.image}`}
+                    src={imageAPI`${profile.image}`}
                     className="img-res"
                     alt=""
                   />
@@ -52,16 +52,17 @@ const Profiles = ({ data }) => {
 
               <div
                 className="team-member-back"
-                style={{ boxShadow: "0px 0px 6px rgba(0, 0, 0, 1.1)" ,minWidth:"250px"}}
+                style={{
+                  boxShadow: "0px 0px 6px rgba(0, 0, 0, 1.1)",
+                  minWidth: "250px",
+                }}
               >
                 <div className="team-member-info">
                   <h3 className="team-member-back-name">{profile.name}</h3>
                   <p className="team-member-back-position">
                     {profile.expertise}
                   </p>
-                  <p className="team-member-back-info">
-                   {profile.bio}
-                  </p>
+                  <p className="team-member-back-info">{profile.bio}</p>
                   <div className="social-icons small">
                     <a href="#" className="rectangle">
                       <i className="fa fa-facebook" />

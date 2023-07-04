@@ -1,7 +1,7 @@
 import React from 'react'
 import './Shop.css'
 import Axios from "axios";
-import { USERAPI } from "utils/api";
+import { USERAPI, imageAPI } from "utils/api";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from 'react-redux';
 const Shop = ({ data }) => {
@@ -31,7 +31,7 @@ const Shop = ({ data }) => {
             <div className="col-lg-4 sm:w-[83%] py-3">
               <div className="img-place wow fadeInUp">
                 <img
-                  src={`http://localhost:4000/uploads/${data.image}`}
+                  src={imageAPI`${data.image}`}
                   alt=""
                 />
               </div>

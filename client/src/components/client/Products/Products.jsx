@@ -1,5 +1,6 @@
 import React,{useState} from "react";
 import './Products.css'
+import { imageAPI } from "utils/api";
 const Products = ({ data }) => {
    const [displayCount, setDisplayCount] = useState(2);
 
@@ -34,13 +35,7 @@ const Products = ({ data }) => {
             >
               <div className="portfolio-wrap">
                 <div className="portfolio-img">
-                  <img
-                    src={`http://localhost:4000/uploads/${product.image.replace(
-                      "\\",
-                      "/"
-                    )}`}
-                    alt="Image"
-                  />
+                  <img src={imageAPI`${product.image}`} alt="Image" />
                 </div>
                 <div className="portfolio-text">
                   <h3>
@@ -48,7 +43,7 @@ const Products = ({ data }) => {
                   </h3>
                   <a
                     className="btn"
-                    href={`http://localhost:4000/uploads/${product.image}`}
+                    href={imageAPI`${product.image}`}
                     data-lightbox="portfolio"
                   >
                     +

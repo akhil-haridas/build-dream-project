@@ -1,5 +1,5 @@
 import React,{useState} from "react";
-
+import { imageAPI } from "utils/api";
 const Category = (props) => {
     const [displayCount, setDisplayCount] = useState(4);
 
@@ -24,7 +24,7 @@ const Category = (props) => {
             className="category border border-black_900_1f border-solid flex flex-1 flex-col gap-[15px] items-center justify-start p-1.5 rounded-[16px] w-full"
           >
             <img
-              src={`http://localhost:4000/uploads/${data.image}`}
+              src={imageAPI`${data.image}`}
               className="h-[151px] md:h-auto object-cover rounded-[9px] w-full"
               alt={data.name}
             />

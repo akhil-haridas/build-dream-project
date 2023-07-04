@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import './Works.css'
+import { imageAPI } from 'utils/api';
 
 const Works = ({data}) => {
 
@@ -44,20 +45,14 @@ const Works = ({data}) => {
             <div className={`col-md-6 col-lg-4`} key={index}>
               <div className="portfolio-item">
                 <img
-                  src={`http://localhost:4000/uploads/${work.image.replace(
-                    "\\",
-                    "/"
-                  )}`}
+                  src={imageAPI`${work.image}`}
                   className="img-fluid"
                   alt={work.title}
                 />
                 <div className="content-holder">
                   <a
                     className="img-popup"
-                    href={`http://localhost:4000/uploads/${work.image.replace(
-                      "\\",
-                      "/"
-                    )}`}
+                    src={imageAPI`${work.image}`}
                   />
                   <div className="text-holder">
                     <h6 className="title">{work.title}</h6>
