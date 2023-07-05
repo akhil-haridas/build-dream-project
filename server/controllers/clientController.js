@@ -14,8 +14,8 @@ const dotenv = require("dotenv").config();
 
 
 const twilio = require("twilio");
-const accountSid = "AC788992c98c290937c939d0e94ab210c9";
-const authToken = "ba2c97154dfacdf965bc6d35e6e99abb";
+const accountSid = "AC30ef2a8d8904cb0fe50e26e1f2c3c325";
+const authToken = "b9c0a5cce5d182c1e88136a553b75ea7";
 const client = twilio(accountSid, authToken);
 
 
@@ -95,34 +95,32 @@ exports.verifyNumber = async (req, res) => {
       return otp;
     }
 
-    const otp = generateOTP(); // Replace with your OTP generation logic
+    const otp = generateOTP();
     const message = `Welcome to BUILD DREAM COMMUNITY , here is your 6 digit otp: ${otp}`;
 
-    client.messages
-      .create({
-        body: message,
-        from: "+13157104110",
-        to: number,
-      })
-      .then((message) => {
-        console.log(message.sid);
-        res.json({
-          status: true,
-          otp:otp
-        });
-      })
-      .catch((error) => {
-        console.log(error);
+   await client.messages
+     .create({
+       body: message,
+       from: "+14508231866",
+       to: number,
+     })
+     .then((message) => {
+       res.json({
+         status: true,
+         otp: otp,
+       });
+     })
+     .catch((error) => {
+       console.log(error);
        res.json({
          status: false,
-         message:
-           "something went wrong!",
+         message: `something went wrong!${error}`,
        });
-      });
+     });
   } catch (error) {
           res.json({
             status: false,
-            message: "something went wrong!",
+            message: `something went wrong!${error}`,
           });
   }
 }
