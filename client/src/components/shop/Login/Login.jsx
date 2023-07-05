@@ -72,7 +72,7 @@ const LoginPage = () => {
              localStorage.setItem("id", result.id);
           navigate("/shop");
         } else {
-          localStorage.clear();
+         
           removeCookie("jwt");
           dispatch(shopActions.shopLogout());
 
