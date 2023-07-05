@@ -82,6 +82,14 @@ exports.verifyNumber = async (req, res) => {
   try {
     const { number } = req.body;
 
+    let user = await User.findOne({ mobile: number });
+
+    if (user) {
+      return res.json({
+        status: false,
+        message: `This phone already have an account`,
+      });
+    }
     function generateOTP() {
       const digits = "0123456789";
       let otp = "";
@@ -104,7 +112,7 @@ exports.verifyNumber = async (req, res) => {
     });
 
     const from = "Vonage APIs";
-    const to = number;
+    const to = `+91${number}`;
     const text = message;
 
     async function sendSMS() {

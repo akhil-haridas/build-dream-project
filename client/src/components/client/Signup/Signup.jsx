@@ -93,10 +93,10 @@ const SignupPage = () => {
   // Sent OTP
   const sentOTP = () => {
     const token = localStorage.getItem("token");
-    const number = "+91" + mobile;
+   
     Axios.post(
       `${USERAPI}verifynumber`,
-      { number },
+      { mobile },
       {
         withCredentials: true,
         headers: { Authorization: `Bearer ${token}` },
