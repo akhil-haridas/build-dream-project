@@ -23,16 +23,19 @@ const ShopRoutes = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (Object.keys(cookies).length > 0) {
+   const name = localStorage.getItem("name");
+  const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
+  const id = localStorage.getItem("id");
       dispatch(
         shopActions.shopAddDetails({
-          name: cookies.jwt.name,
-          token: cookies.jwt.token,
-          role: cookies.jwt.role,
-          id:cookies.jwt.id
+          name: name,
+          token:token,
+          role: role,
+          id:id
         })
       );
-    }
+   
   }, []);
 
   const user = useSelector((state) => state?.shop?.shopRole);

@@ -25,11 +25,12 @@ const AdminRoutes = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (Object.keys(cookies).length > 0) {
-      const { name, token, role } = cookies.jwt;
-      if (role === "ADMIN") {
-        dispatch(adminActions.adminAddDetails({ name, token, role }));
-      }
+    const name = localStorage.getItem("name");
+    const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
+
+    if (role === "ADMIN") {
+      dispatch(adminActions.adminAddDetails({ name, token, role }));
     }
   }, []);
 

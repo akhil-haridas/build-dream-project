@@ -26,14 +26,17 @@ const ProfessionalRoutes = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (Object.keys(cookies).length > 0) {
-      const { name, token, role,id } = cookies.jwt;
+   const name = localStorage.getItem("name");
+   const token = localStorage.getItem("token");
+   const role = localStorage.getItem("role");
+    const id = localStorage.getItem("id");
+    
       if (role === "PROFESSIONAL") {
         dispatch(
           professionalActions.professionalAddDetails({ name, token, role ,id})
         );
       }
-    }
+
   }, []);
 
   const user = useSelector((state) => state?.professional?.professionalRole);
