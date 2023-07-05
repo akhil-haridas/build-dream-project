@@ -60,36 +60,20 @@ const ForgotPassword = () => {
   };
 
   const verifyOTP = (event) => {
+  
     event.preventDefault();
-    if (!otp || !final) return;
-    final
-      .confirm(otp)
-      .then((result) => {
-        setShowOtp(false);
-        setShowReset(true);
-      })
-      .catch((err) => {
-         navigate("/server-error");
-      });
+
+    if (otp === null || final === null) return;
+    if (otp === final) {
+     setShowOtp(false);
+     setShowReset(true);
+    } else {
+      alert("Wrong code");
+    }
+    
   };
 
-  const sentOTP = () => {
-    if (mobile === "" || mobile.length < 10) return;
-    const number = "+91" + mobile;
-    let verify = new firebase.auth.RecaptchaVerifier("recaptcha-container");
-    auth
-      .signInWithPhoneNumber(number, verify)
-      .then((result) => {
-        setShowMobile(false)
-        setShowOtp(true)
-          setFinal(result)
-      })
-      .catch((err) => {
-        navigate("/server-error");
-      });
-  };
-
-  const sentMOBILE = (e) => {
+  const sentOTP = (e) => {
     const token = localStorage.getItem("token");
     e.preventDefault();
     Axios.post(
@@ -102,7 +86,9 @@ const ForgotPassword = () => {
     ).then((response) => {
       const result = response.data;
       if (result.status) {
-        sentOTP();
+        setShowMobile(false);
+        setShowOtp(true);
+        setFinal(result.otp);
       } else {
         setErrMessage(result.message);
       }
@@ -177,7 +163,7 @@ const ForgotPassword = () => {
                 ""
               )}
               <div id="recaptcha-container"></div>
-              <form className="card mt-4" onSubmit={sentMOBILE}>
+              <form className="card mt-4" onSubmit={sentOTP}>
                 <div className="card-body">
                   <div className="form-group">
                     <label htmlFor="email-for-pass">

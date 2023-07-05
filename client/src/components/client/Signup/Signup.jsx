@@ -303,11 +303,10 @@ const SignupPage = () => {
                   marginTop: "13px",
                 }}
               ></div>
-              <div id="recaptcha-container" style={{ marginTop: "25px" }}></div>
               <div
                 style={{
                   display: show ? "flex" : "none",
-                  marginBottom: "-8px",
+                  marginBottom: "20px",
                   marginLeft: "11px",
                   marginTop: "18px",
                   width: "212px",

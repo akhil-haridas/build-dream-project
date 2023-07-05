@@ -12,10 +12,11 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv").config();
 
-const twilio = require("twilio");
-const accountSid = "AC30ef2a8d8904cb0fe50e26e1f2c3c325";
-const authToken = "b9c0a5cce5d182c1e88136a553b75ea7";
-const client = twilio(accountSid, authToken);
+const { Vonage } = require("@vonage/server-sdk");
+const vonage = new Vonage({
+  apiKey: "313d6a61",
+  apiSecret: "WdG6RAz8dKVa056E",
+});
 
 //Secure Password
 const securePassword = async (password) => {
@@ -27,6 +28,16 @@ const securePassword = async (password) => {
     throw new Error("Error while hashing password");
   }
 };
+
+function generateOTP() {
+  const digits = "0123456789";
+  let otp = "";
+
+  for (let i = 0; i < 6; i++) {
+    otp += digits[Math.floor(Math.random() * 10)];
+  }
+  return otp;
+}
 
 //client Signup
 exports.Signup = async (req, res) => {
@@ -81,35 +92,16 @@ exports.Signup = async (req, res) => {
 exports.verifyNumber = async (req, res) => {
   try {
     const { number } = req.body;
-console.log(number)
-    let user = await User.findOne({ mobile: number });
-console.log(user)
-    if (user) {
+    let user = await User.find({ mobile: number });
+    if (user.length > 0) {
       return res.json({
         status: false,
         message: `This phone already have an account`,
       });
     }
-    function generateOTP() {
-      const digits = "0123456789";
-      let otp = "";
-
-      for (let i = 0; i < 6; i++) {
-        otp += digits[Math.floor(Math.random() * 10)];
-      }
-
-      return otp;
-    }
 
     const otp = generateOTP();
     const message = `Welcome to BUILD DREAM COMMUNITY , here is your 6 digit otp: ${otp}`;
-
-    const { Vonage } = require("@vonage/server-sdk");
-
-    const vonage = new Vonage({
-      apiKey: "313d6a61",
-      apiSecret: "WdG6RAz8dKVa056E",
-    });
 
     const from = "Vonage APIs";
     const to = `+91${number}`;
@@ -119,6 +111,7 @@ console.log(user)
       await vonage.sms
         .send({ to, from, text })
         .then((resp) => {
+          console.log(resp)
           console.log("Message sent successfully");
           res.json({
             status: true,
@@ -232,7 +225,30 @@ exports.forgotPassword = async (req, res) => {
         .json({ status: false, message: "You are no longer a member" });
     }
 
-    return res.status(200).json({ status: true, message: null });
+    const otp = generateOTP();
+    const message = `Please reset your BUILD DREAM password , here is your 6 digit otp: ${otp}`;
+
+    const from = "Vonage APIs";
+    const to = `+91${mobile}`;
+    const text = message;
+
+    async function sendSMS() {
+      await vonage.sms
+        .send({ to, from, text })
+        .then((resp) => {
+          console.log("Message sent successfully");
+          res.json({
+            status: true,
+            otp: otp,
+          });
+        })
+        .catch((err) => {
+          console.log("There was an error sending the messages.");
+          console.error(err);
+        });
+    }
+
+    sendSMS();
   } catch (error) {
     console.error("Error retrieving user:", error);
     return res.status(500).json({ status: false, message: "Server Error" });
