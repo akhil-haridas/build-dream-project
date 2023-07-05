@@ -61,6 +61,9 @@ const Login = () => {
               role: result.role,
             })
           );
+            localStorage.setItem("name", result.name);
+            localStorage.setItem("token", result.token);
+            localStorage.setItem("role", result.role);
           navigate("/admin");
         } else {
           setErrmessage(result.message);

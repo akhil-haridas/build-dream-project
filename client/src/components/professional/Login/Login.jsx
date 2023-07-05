@@ -66,8 +66,13 @@ const LoginPage = () => {
               id: result.id,
             })
           );
+             localStorage.setItem("name", result.name);
+             localStorage.setItem("token", result.token);
+             localStorage.setItem("role", result.role);
+             localStorage.setItem("id", result.id);
           navigate("/professional");
         } else {
+          localStorage.clear();
           removeCookie("jwt");
           dispatch(professionalActions.professionalLogout());
 
