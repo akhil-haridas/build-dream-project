@@ -12,6 +12,7 @@
   "author": "4khilHaridas",
   "license": "ISC",
   "dependencies": {
+    "@vonage/server-sdk": "^3.6.0",
     "bcrypt": "^5.0.1",
     "colors": "^1.4.0",
     "cookie-parser": "^1.4.5",

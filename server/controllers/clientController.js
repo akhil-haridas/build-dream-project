@@ -12,12 +12,10 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv").config();
 
-
 const twilio = require("twilio");
 const accountSid = "AC30ef2a8d8904cb0fe50e26e1f2c3c325";
 const authToken = "b9c0a5cce5d182c1e88136a553b75ea7";
 const client = twilio(accountSid, authToken);
-
 
 //Secure Password
 const securePassword = async (password) => {
@@ -82,7 +80,7 @@ exports.Signup = async (req, res) => {
 
 exports.verifyNumber = async (req, res) => {
   try {
-    const { number } = req.body
+    const { number } = req.body;
 
     function generateOTP() {
       const digits = "0123456789";
@@ -98,32 +96,41 @@ exports.verifyNumber = async (req, res) => {
     const otp = generateOTP();
     const message = `Welcome to BUILD DREAM COMMUNITY , here is your 6 digit otp: ${otp}`;
 
-   await client.messages
-     .create({
-       body: message,
-       from: "+14508231866",
-       to: number,
-     })
-     .then((message) => {
-       res.json({
-         status: true,
-         otp: otp,
-       });
-     })
-     .catch((error) => {
-       console.log(error);
-       res.json({
-         status: false,
-         message: `something went wrong!${error}`,
-       });
-     });
-  } catch (error) {
+    const { Vonage } = require("@vonage/server-sdk");
+
+    const vonage = new Vonage({
+      apiKey: "313d6a61",
+      apiSecret: "WdG6RAz8dKVa056E",
+    });
+
+    const from = "Vonage APIs";
+    const to = number;
+    const text = message;
+
+    async function sendSMS() {
+      await vonage.sms
+        .send({ to, from, text })
+        .then((resp) => {
+          console.log("Message sent successfully");
           res.json({
-            status: false,
-            message: `something went wrong!${error}`,
+            status: true,
+            otp: otp,
           });
+        })
+        .catch((err) => {
+          console.log("There was an error sending the messages.");
+          console.error(err);
+        });
+    }
+
+    sendSMS();
+  } catch (error) {
+    res.json({
+      status: false,
+      message: `something went wrong!${error}`,
+    });
   }
-}
+};
 // client Login
 exports.Login = async (req, res) => {
   try {
@@ -227,7 +234,6 @@ exports.forgotPassword = async (req, res) => {
 //Reset Password
 
 exports.Resetpass = async (req, res) => {
-
   try {
     const { password, mobile } = req.body;
     const userRESET = {
@@ -428,7 +434,7 @@ exports.getChat = asyncHandler(async (req, res) => {
       res.status(200).json(FullChat);
     }
   } catch (error) {
-      console.log(error.message);
+    console.log(error.message);
     res.status(500).json({ message: "Server Error" });
   }
 });
@@ -462,13 +468,12 @@ exports.accessChat = asyncHandler(async (req, res) => {
 
     res.status(200).send(results);
   } catch (error) {
-    console.log(error.message)
+    console.log(error.message);
     res.status(500).json({ message: "Server Error" });
   }
 });
 
 exports.sendMessage = asyncHandler(async (req, res) => {
-
   const { content, chatId } = req.body;
 
   const userID = req.userID;
@@ -512,7 +517,7 @@ exports.sendMessage = asyncHandler(async (req, res) => {
     await Chat.findByIdAndUpdate(chatId, { latestMessage: message });
     res.json(message);
   } catch (error) {
-      console.log(error.message);
+    console.log(error.message);
     res.status(500).json({ message: "Server Error" });
   }
 });
@@ -528,7 +533,7 @@ exports.allMessages = asyncHandler(async (req, res) => {
       .populate("chat");
     res.json(messages);
   } catch (error) {
-      console.log(error.message);
+    console.log(error.message);
     res.status(500).json({ message: "Server Error" });
   }
 });
@@ -550,7 +555,7 @@ exports.addRequirement = async (req, res) => {
   try {
     const { category, requirement } = req.body;
 
-   const userID = req.userID;
+    const userID = req.userID;
 
     const newRequirement = new Requirement({
       user: userID,
