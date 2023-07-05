@@ -81,9 +81,9 @@ exports.Signup = async (req, res) => {
 exports.verifyNumber = async (req, res) => {
   try {
     const { number } = req.body;
-
+console.log(number)
     let user = await User.findOne({ mobile: number });
-
+console.log(user)
     if (user) {
       return res.json({
         status: false,
