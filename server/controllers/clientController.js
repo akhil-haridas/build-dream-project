@@ -378,11 +378,8 @@ exports.getAvatar = async (req, res) => {
 };
 
 exports.getChat = asyncHandler(async (req, res) => {
-  console.log(GETCHAT)
   const { userId, userType } = req.body;
-
-  const jwtToken = jwt.verify(req.cookies.jwt.token, "secretCode");
-  const userID = jwtToken.id;
+  const userID = req.userID;
   if (!userId || !userType) {
     return res.sendStatus(400);
   }
@@ -440,9 +437,7 @@ exports.getChat = asyncHandler(async (req, res) => {
 
 exports.accessChat = asyncHandler(async (req, res) => {
   try {
-    console.log(ACCESSCHAT);
-    const jwtToken = jwt.verify(req.cookies.jwt.token, "secretCode");
-    const userID = jwtToken.id;
+    const userID = req.userID;
     const userType = "User";
 
     let results = await Chat.find({
@@ -475,10 +470,10 @@ exports.accessChat = asyncHandler(async (req, res) => {
 });
 
 exports.sendMessage = asyncHandler(async (req, res) => {
-  console.log("SENT MESSAGE")
+
   const { content, chatId } = req.body;
-  const jwtToken = jwt.verify(req.cookies.jwt.token, "secretCode");
-  const userID = jwtToken.id;
+
+  const userID = req.userID;
 
   if (!content || !chatId) {
     return res.sendStatus(400);
@@ -525,7 +520,6 @@ exports.sendMessage = asyncHandler(async (req, res) => {
 });
 
 exports.allMessages = asyncHandler(async (req, res) => {
-  console.log("ALL MESSAGE")
   try {
     const chatId = req.query.id;
     const messages = await Message.find({ chat: chatId })
@@ -557,8 +551,8 @@ exports.getMagazine = async (req, res) => {
 exports.addRequirement = async (req, res) => {
   try {
     const { category, requirement } = req.body;
-    const jwtToken = jwt.verify(req.cookies.jwt.token, "secretCode");
-    const userID = jwtToken.id;
+
+   const userID = req.userID;
 
     const newRequirement = new Requirement({
       user: userID,
