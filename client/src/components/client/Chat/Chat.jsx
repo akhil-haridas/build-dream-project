@@ -54,7 +54,8 @@ const Chat = () => {
         }
       })
       .catch((error) => {
-        navigate("/server-error");
+        console.log(error);
+        // navigate("/server-error");
       });
   }, []);
 
@@ -89,7 +90,8 @@ const Chat = () => {
 
       selectedChatCompare = selectedChat;
     } catch (error) {
-      navigate("/server-error");
+      console.log(error)
+      // navigate("/server-error");
     }
   };
 
@@ -151,7 +153,8 @@ const Chat = () => {
         setMessages([...messages, newSentMessage]);
         setNewMessage("");
       } catch (error) {
-        navigate("/server-error");
+        console.log(error);
+        // navigate("/server-error");
       }
     }
   };
