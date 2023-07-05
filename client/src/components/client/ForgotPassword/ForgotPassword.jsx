@@ -91,14 +91,18 @@ const ForgotPassword = () => {
   };
 
   const sentMOBILE = (e) => {
+    const token = localStorage.getItem("token");
     e.preventDefault();
     Axios.post(
       `${USERAPI}forgotpassword`,
       { mobile },
-      { withCredentials: true }
+      {
+        withCredentials: true,
+        headers: { Authorization: `Bearer ${token}` },
+      }
     ).then((response) => {
       const result = response.data;
-      if (result.status) {  
+      if (result.status) {
         sentOTP();
       } else {
         setErrMessage(result.message);
@@ -108,15 +112,19 @@ const ForgotPassword = () => {
 
   const handleForgotPassword = (event) => {
     event.preventDefault()
+      const token = localStorage.getItem("token");
     Axios.post(
       `${USERAPI}resetpass`,
       { password, mobile },
-      { withCredentials: true }
+      {
+        withCredentials: true,
+        headers: { Authorization: `Bearer ${token}` },
+      }
     ).then((response) => {
       const result = response.data.userRESET;
       if (result.status) {
         setSucMessage("Password changed successfully!");
-        navigate('/login')
+        navigate("/login");
       } else {
         setErrMessage(result.message);
       }

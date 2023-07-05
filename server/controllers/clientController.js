@@ -12,6 +12,13 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv").config();
 
+
+const twilio = require("twilio");
+const accountSid = "AC788992c98c290937c939d0e94ab210c9";
+const authToken = "ba2c97154dfacdf965bc6d35e6e99abb";
+const client = twilio(accountSid, authToken);
+
+
 //Secure Password
 const securePassword = async (password) => {
   try {
@@ -73,6 +80,52 @@ exports.Signup = async (req, res) => {
   }
 };
 
+exports.verifyNumber = async (req, res) => {
+  try {
+    const { number } = req.body
+
+    function generateOTP() {
+      const digits = "0123456789";
+      let otp = "";
+
+      for (let i = 0; i < 6; i++) {
+        otp += digits[Math.floor(Math.random() * 10)];
+      }
+
+      return otp;
+    }
+
+    const otp = generateOTP(); // Replace with your OTP generation logic
+    const message = `Welcome to BUILD DREAM COMMUNITY , here is your 6 digit otp: ${otp}`;
+
+    client.messages
+      .create({
+        body: message,
+        from: "+13157104110",
+        to: number,
+      })
+      .then((message) => {
+        console.log(message.sid);
+        res.json({
+          status: true,
+          otp:otp
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+       res.json({
+         status: false,
+         message:
+           "something went wrong!",
+       });
+      });
+  } catch (error) {
+          res.json({
+            status: false,
+            message: "something went wrong!",
+          });
+  }
+}
 // client Login
 exports.Login = async (req, res) => {
   try {
@@ -103,9 +156,13 @@ exports.Login = async (req, res) => {
       const isMatch = await bcrypt.compare(password, user.password);
 
       if (isMatch) {
-        const token = jwt.sign({ id: user._id }, process.env.JWT_KEY, {
-          expiresIn: "30d",
-        });
+        const token = jwt.sign(
+          { id: user._id, role: "client" },
+          process.env.JWT_KEY,
+          {
+            expiresIn: "30d",
+          }
+        );
         userLOGIN.status = true;
         userLOGIN.name = user.name;
         userLOGIN.token = token;

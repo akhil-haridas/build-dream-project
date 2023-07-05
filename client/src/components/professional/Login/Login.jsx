@@ -33,7 +33,7 @@ const LoginPage = () => {
   const [showQuote, setShowQuote] = useState(true);
 
   const [cookie, setCookie, removeCookie] = useCookies(["jwt"]);
-  
+
   const handleModalClose = () => {
     setShowModal(false);
     setShowQuote(true);
@@ -46,31 +46,32 @@ const LoginPage = () => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-
+    const token = localStorage.getItem("token");
     Axios.post(
       `${PROFESSIONALAPI}login`,
       { email, password },
-      { withCredentials: true }
+      {
+        withCredentials: true,
+        headers: { Authorization: `Bearer ${token}` },
+      }
     ).then((response) => {
       const result = response.data.userLOGIN;
       if (result.status) {
-        console.log("1")
+        console.log("1");
         if (result.plan) {
-           console.log("2");
+          console.log("2");
           dispatch(
             professionalActions.professionalAddDetails({
               name: result.name,
               token: result.token,
               role: result.role,
-              id:result.id
+              id: result.id,
             })
           );
           navigate("/professional");
         } else {
-      removeCookie("jwt");
-          dispatch(professionalActions.professionalLogout
-            ());
-
+          removeCookie("jwt");
+          dispatch(professionalActions.professionalLogout());
 
           navigate(`/professional/subscription/${result.id}`);
         }
@@ -112,10 +113,14 @@ const LoginPage = () => {
   };
 
   const handleForgotPassword = () => {
+    const token = localStorage.getItem("token");
     Axios.post(
       `${PROFESSIONALAPI}resetpass`,
       { newpass, mobile },
-      { withCredentials: true }
+      {
+        withCredentials: true,
+        headers: { Authorization: `Bearer ${token}` },
+      }
     ).then((response) => {
       const result = response.data.userRESET;
       if (result.status) {

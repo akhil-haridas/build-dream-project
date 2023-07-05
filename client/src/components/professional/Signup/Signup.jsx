@@ -1,11 +1,10 @@
-import React, { useState, useRef,useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 import { useNavigate } from "react-router-dom";
 
 import { PROFESSIONALAPI } from "utils/api.js";
 
 import Axios from "axios";
-
 
 const ProfessionalSignup = () => {
   const navigate = useNavigate();
@@ -18,7 +17,7 @@ const ProfessionalSignup = () => {
   const [passwordError, setPasswordError] = useState("");
   const [selectedExpertise, setSelectedExpertise] = useState("");
   const [selectedType, setSelectedType] = useState("");
-  const [data,setData] = useState([])
+  const [data, setData] = useState([]);
   const handleExpertiseChange = (event) => {
     setSelectedExpertise(event.target.value);
   };
@@ -37,22 +36,24 @@ const ProfessionalSignup = () => {
   const emailChangeHandler = (e) => {
     setEmail(e.target.value);
   };
-      useEffect(() => {
-        Axios.get(`${PROFESSIONALAPI}getcategories`, { withCredentials: true })
-          .then((response) => {
-            setData(response.data.data);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }, []);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    Axios.get(`${PROFESSIONALAPI}getcategories`, {
+      withCredentials: true,
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((response) => {
+        setData(response.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
   const checkboxRef = useRef(null);
 
   const toggleCheckbox = () => {
     checkboxRef.current.checked = !checkboxRef.current.checked;
   };
-
- 
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -66,9 +67,13 @@ const ProfessionalSignup = () => {
     formData.append("role", "PROFESSIONAL");
     formData.append("district", selectedType);
     formData.append("expert", selectedExpertise);
+    const token = localStorage.getItem("token");
 
     Axios.post(`${PROFESSIONALAPI}signup`, formData, {
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
       withCredentials: true,
     })
       .then((response) => {
@@ -84,7 +89,6 @@ const ProfessionalSignup = () => {
         console.error(error);
       });
   };
-
 
   return (
     <>
@@ -197,10 +201,10 @@ const ProfessionalSignup = () => {
                   value={selectedType}
                   onChange={handleTypeChange}
                 >
-                  <option >Select your district</option>
-                  <option >THIRUVANATHAPURAM</option>
-                  <option >KOLLAM</option>
-                  <option >PATHANAMTHITTA</option>
+                  <option>Select your district</option>
+                  <option>THIRUVANATHAPURAM</option>
+                  <option>KOLLAM</option>
+                  <option>PATHANAMTHITTA</option>
                   <option>ALAPPUAHA</option>
                   <option>KOTTAYAM</option>
                   <option>IDUKKI</option>

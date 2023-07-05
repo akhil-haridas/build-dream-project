@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import "../../client/Chat/Chat.css";
 import Axios from "axios";
-import { PROFESSIONALAPI } from "utils/api";
+import { PROFESSIONALAPI, imageAPI } from "utils/api";
 import { useSelector } from "react-redux";
 import io from "socket.io-client";
 
-const ENDPOINT = "http://localhost:4000";
+const ENDPOINT = "https://build-dream-server.onrender.com";
 
 var socket, selectedChatCompare;
 
@@ -30,7 +30,11 @@ const Chat = () => {
   }, []);
 
   useEffect(() => {
-    Axios.get(`${PROFESSIONALAPI}chat`, { withCredentials: true })
+    const token = localStorage.getItem("token");
+    Axios.get(`${PROFESSIONALAPI}chat`, {
+      withCredentials: true,
+      headers: { Authorization: `Bearer ${token}` },
+    })
       .then((response) => {
         setChats(response.data);
       })
@@ -52,10 +56,12 @@ const Chat = () => {
   const fetchMessages = async () => {
     if (!selectedChat) return;
     try {
+      const token = localStorage.getItem("token");
       const response = await Axios.get(
         `${PROFESSIONALAPI}message?id=${selectedChat._id}`,
         {
           withCredentials: true,
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
       setMessages(response.data);
@@ -107,13 +113,17 @@ const Chat = () => {
     if (newMessage && selectedChat) {
       socket.emit("stop typing", selectedChat._id);
       try {
+        const token = localStorage.getItem("token");
         const response = await Axios.post(
           `${PROFESSIONALAPI}message`,
           {
             content: newMessage,
             chatId: selectedChat._id,
           },
-          { withCredentials: true }
+          {
+            withCredentials: true,
+            headers: { Authorization: `Bearer ${token}` },
+          }
         );
 
         const newSentMessage = response.data;
@@ -268,13 +278,12 @@ const Chat = () => {
                   className={`chatlist__item ${
                     selectedChat === chat ? "active" : ""
                   } `}
+                  key={index}
                 >
                   <div className="avatar">
                     <div className="avatar-img">
                       <img
-                        src={`http://localhost:4000/uploads/${
-                          getSender(chat.users).image
-                        }`}
+                        src={`${imageAPI}${getSender(chat.users).image}`}
                         alt="#"
                       />
                     </div>
@@ -301,7 +310,7 @@ const Chat = () => {
                   <div className="avatar">
                     <div className="avatar-img">
                       <img
-                        src={`http://localhost:4000/uploads/${selectedChat?.users[0]?.refId?.image}`}
+                        src={`${imageAPI}${selectedChat?.users[0]?.refId?.image}`}
                         alt="avatar"
                       />
                     </div>
@@ -338,6 +347,7 @@ const Chat = () => {
                       className={`chat__item ${
                         isSameSender(m) ? "other" : "me"
                       }`}
+                      key={i}
                     >
                       <div className="chat__item__content">
                         <div className="chat__msg">{m.content}</div>
@@ -351,8 +361,8 @@ const Chat = () => {
                           <img
                             src={
                               isSameSender(m)
-                                ? `http://localhost:4000/uploads/${selectedChat?.users[0]?.refId?.image}`
-                                : `http://localhost:4000/uploads/${selectedChat?.users[1]?.refId?.image}`
+                                ? `${imageAPI}${selectedChat?.users[0]?.refId?.image}`
+                                : `${imageAPI}${selectedChat?.users[1]?.refId?.image}`
                             }
                             alt="#"
                           />
@@ -398,7 +408,7 @@ const Chat = () => {
             <div className="profile__card user__profile__image">
               <div className="profile__image">
                 <img
-                  src={`http://localhost:4000/uploads/${selectedChat?.users[0]?.refId?.image}`}
+                  src={`${imageAPI}${selectedChat?.users[0]?.refId?.image}`}
                   alt="avatar"
                 />
               </div>

@@ -1,120 +1,121 @@
-import React,{useState,useEffect} from 'react'
-import { PROFESSIONALAPI } from 'utils/api';
-import Axios from 'axios'
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { PROFESSIONALAPI, imageAPI } from "utils/api";
+import Axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
 const Magazine = () => {
   const { id } = useParams();
-  const navigate = useNavigate()
-      const [data, setData] = useState([]);
-      const [editImage, setEditImage] = useState(false);
-      const [editDescription, setEditDescription] = useState(false);
-      const [editTitle, setEditTitle] = useState(false);
-      const [imagePreview, setImagePreview] = useState(null);
+  const navigate = useNavigate();
+  const [data, setData] = useState([]);
+  const [editImage, setEditImage] = useState(false);
+  const [editDescription, setEditDescription] = useState(false);
+  const [editTitle, setEditTitle] = useState(false);
+  const [imagePreview, setImagePreview] = useState(null);
   const [fileError, setFileError] = useState("");
 
-
-      useEffect(() => {
-        Axios.get(`${PROFESSIONALAPI}getmagazine?id=${id}`, {
-          withCredentials: true,
-        })
-          .then((response) => {
-            const { success, magazine } = response.data;
-            if (success && magazine) {
-              setData(magazine);
-              setEditTitle(magazine.title);
-              setEditDescription(magazine.description);
-              setImagePreview(
-                `http://localhost:4000/uploads/${magazine.image}`
-              );
-            } else {
-              // Handle error or magazine not found case
-              console.log("Failed to retrieve magazine or magazine not found");
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }, []);
-
-
-     const handleFormSubmit = (e) => {
-       e.preventDefault();
-
-       const formData = new FormData();
-
-       if (editTitle.trim() !== "") {
-         formData.append("title", editTitle);
-       }
-       if (editDescription.trim() !== "") {
-         formData.append("description", editDescription);
-       }
-       if (editImage !== null) {
-         formData.append("image", editImage);
-       }
-
-       Axios.post(`${PROFESSIONALAPI}editmagazine?id=${id}`, formData, {
-         headers: { "Content-Type": "multipart/form-data" },
-         withCredentials: true,
-       })
-         .then((response) => {
-           const { success } = response.data;
-           console.log(response.data);
-           if (success) {
-             alert("Updated successfully");
-             navigate("/professional/magazines");
-           } else {
-             console.log("Failed to update magazine");
-           }
-         })
-         .catch((error) => {
-           console.error(error);
-         });
-     };
-
-     const handleDelete = () => {
-       if (window.confirm("Are you sure you want to delete this work?")) {
-         Axios.delete(`${PROFESSIONALAPI}deletemagazine?id=${id}`, {
-           withCredentials: true,
-         })
-           .then((response) => {
-             const { success } = response.data;
-             console.log(response.data);
-             if (success) {
-               alert("Deleted successfully")
-               navigate("/professional/magazines");
-             } else {
-               console.log("Failed to delete magazine");
-             }
-           })
-           .catch((error) => {
-             console.error(error);
-           });
-       }
-     };
-
-
-      const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        const reader = new FileReader();
-
-        if (file) {
-          if (file.type === "image/jpeg" || file.type === "image/jpg") {
-            reader.onloadend = () => {
-              setEditImage(file);
-              setImagePreview(reader.result);
-              setFileError("");
-            };
-            reader.readAsDataURL(file);
-          } else {
-            setEditImage(null);
-            setImagePreview(null);
-            setFileError("Please select a JPEG or JPG file.");
-          }
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    Axios.get(`${PROFESSIONALAPI}getmagazine?id=${id}`, {
+      withCredentials: true,
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((response) => {
+        const { success, magazine } = response.data;
+        if (success && magazine) {
+          setData(magazine);
+          setEditTitle(magazine.title);
+          setEditDescription(magazine.description);
+          setImagePreview(`${imageAPI}${magazine.image}`);
+        } else {
+          // Handle error or magazine not found case
+          console.log("Failed to retrieve magazine or magazine not found");
         }
-      };
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
 
-    
+    const formData = new FormData();
+
+    if (editTitle.trim() !== "") {
+      formData.append("title", editTitle);
+    }
+    if (editDescription.trim() !== "") {
+      formData.append("description", editDescription);
+    }
+    if (editImage !== null) {
+      formData.append("image", editImage);
+    }
+
+    const token = localStorage.getItem("token");
+    Axios.post(`${PROFESSIONALAPI}editmagazine?id=${id}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
+      withCredentials: true,
+    })
+      .then((response) => {
+        const { success } = response.data;
+        console.log(response.data);
+        if (success) {
+          alert("Updated successfully");
+          navigate("/professional/magazines");
+        } else {
+          console.log("Failed to update magazine");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const handleDelete = () => {
+    const token = localStorage.getItem("token");
+    if (window.confirm("Are you sure you want to delete this work?")) {
+      Axios.delete(`${PROFESSIONALAPI}deletemagazine?id=${id}`, {
+        withCredentials: true,
+        headers: { Authorization: `Bearer ${token}` },
+      })
+        .then((response) => {
+          const { success } = response.data;
+          console.log(response.data);
+          if (success) {
+            alert("Deleted successfully");
+            navigate("/professional/magazines");
+          } else {
+            console.log("Failed to delete magazine");
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+
+    if (file) {
+      if (file.type === "image/jpeg" || file.type === "image/jpg") {
+        reader.onloadend = () => {
+          setEditImage(file);
+          setImagePreview(reader.result);
+          setFileError("");
+        };
+        reader.readAsDataURL(file);
+      } else {
+        setEditImage(null);
+        setImagePreview(null);
+        setFileError("Please select a JPEG or JPG file.");
+      }
+    }
+  };
+
   return (
     <main>
       <div className="head-title">
@@ -248,6 +249,6 @@ const Magazine = () => {
       </div>
     </main>
   );
-}
+};
 
-export default Magazine
+export default Magazine;

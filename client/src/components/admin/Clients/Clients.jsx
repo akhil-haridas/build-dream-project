@@ -1,38 +1,44 @@
-import React, { useEffect, useState } from 'react'
-import { AdminAPI } from 'utils/api';
-import Axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { AdminAPI, imageAPI } from "utils/api";
+import Axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Clients = () => {
-    const navigate = useNavigate()
-      const [data, setData] = useState([]);
-    const [allow, setAllow] = useState(1);
-    
-      const handleProfileClick = (id) => {
-        navigate(`/admin/clients/${id}`);
-    };
-    
-      useEffect(() => {
-        Axios.get(`${AdminAPI}getclients`, { withCredentials: true })
-          .then((response) => {
-            setData(response.data.data);
-         
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }, [allow]);
-    
-      const blockUser = (id) => {
-        console.log(id);
-        Axios.get(`${AdminAPI}blockclient/${id}`, { withCredentials: true })
-          .then((response) => {
-            setAllow((prevState) => prevState + 1);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      };
+  const navigate = useNavigate();
+  const [data, setData] = useState([]);
+  const [allow, setAllow] = useState(1);
+
+  const handleProfileClick = (id) => {
+    navigate(`/admin/clients/${id}`);
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    Axios.get(`${AdminAPI}getclients`, {
+      withCredentials: true,
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((response) => {
+        setData(response.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [allow]);
+
+  const blockUser = (id) => {
+    const token = localStorage.getItem("token");
+    Axios.get(`${AdminAPI}blockclient/${id}`, {
+      withCredentials: true,
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((response) => {
+        setAllow((prevState) => prevState + 1);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   return (
     <main>
       <div className="head-title">
@@ -94,7 +100,7 @@ const Clients = () => {
               ) : (
                 data.map((obj, index) => {
                   return (
-                    <tr>
+                    <tr key={obj._id}>
                       <td>
                         <p style={{ marginTop: "21px", fontWeight: 600 }}>
                           {index + 1}
@@ -103,10 +109,7 @@ const Clients = () => {
                       <td>
                         <div className="d-flex align-items-center">
                           <img
-                            src={`http://localhost:4000/uploads/${obj.image.replace(
-                              "\\",
-                              "/"
-                            )}`}
+                            src={`${imageAPI}${obj.image}`}
                             alt=""
                             style={{ width: "45px", height: "45px" }}
                             className="rounded-circle"
@@ -170,6 +173,6 @@ const Clients = () => {
       </div>
     </main>
   );
-}
+};
 
-export default Clients
+export default Clients;

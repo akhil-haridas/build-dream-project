@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from "react";
 import "./Chat.css";
 import Axios from "axios";
-import { USERAPI } from "utils/api";
+import { USERAPI, imageAPI } from "utils/api";
 import { useSelector } from "react-redux";
 import io from "socket.io-client";
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-const ENDPOINT = "http://localhost:4000";
+const ENDPOINT = "https://build-dream-server.onrender.com";
 
 var socket, selectedChatCompare;
 
 const Chat = () => {
   const userID = useSelector((state) => state.user.userID);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [chats, setChats] = useState([]);
   const [selectedChat, setSelectedChat] = useState(null);
   const [newMessage, setNewMessage] = useState("");
@@ -28,7 +28,7 @@ const Chat = () => {
 
   useEffect(() => {
     socket = io(ENDPOINT);
-    console.log(socket,"CHAT SOCKET")
+    console.log(socket, "CHAT SOCKET");
     socket.emit("setup", userID);
     socket.on("connected", () => setsocketConnected(true));
     socket.on("typing", () => setIsTyping(true));
@@ -36,18 +36,25 @@ const Chat = () => {
   }, []);
 
   useEffect(() => {
-    Axios.get(`${USERAPI}chat`, { withCredentials: true })
+    const token = localStorage.getItem("token");
+
+    Axios.get(`${USERAPI}chat`, {
+      withCredentials: true,
+      headers: { Authorization: `Bearer ${token}` },
+    })
       .then((response) => {
         setChats(response.data);
         const selectedChatID = localStorage.getItem("selectedChatID");
         if (selectedChatID) {
-          const chat = response.data.find((chat) => chat._id === selectedChatID);
+          const chat = response.data.find(
+            (chat) => chat._id === selectedChatID
+          );
           setSelectedChat(chat);
           localStorage.removeItem("selectedChatID");
         }
       })
       .catch((error) => {
-          navigate("/server-error");
+        navigate("/server-error");
       });
   }, []);
 
@@ -67,12 +74,14 @@ const Chat = () => {
   }, [selectedChat]);
 
   const fetchMessages = async () => {
+    const token = localStorage.getItem("token");
     if (!selectedChat) return;
     try {
       const response = await Axios.get(
         `${USERAPI}message?id=${selectedChat._id}`,
         {
           withCredentials: true,
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
       setMessages(response.data);
@@ -121,6 +130,7 @@ const Chat = () => {
   };
 
   const sendMessage = async () => {
+    const token = localStorage.getItem("token");
     if (newMessage && selectedChat) {
       socket.emit("stop typing", selectedChat._id);
       try {
@@ -130,7 +140,10 @@ const Chat = () => {
             content: newMessage,
             chatId: selectedChat._id,
           },
-          { withCredentials: true }
+          {
+            withCredentials: true,
+            headers: { Authorization: `Bearer ${token}` },
+          }
         );
 
         const newSentMessage = response.data;
@@ -138,7 +151,7 @@ const Chat = () => {
         setMessages([...messages, newSentMessage]);
         setNewMessage("");
       } catch (error) {
-       navigate("/server-error");
+        navigate("/server-error");
       }
     }
   };
@@ -217,15 +230,14 @@ const Chat = () => {
     e.target.parentNode.classList.toggle("open");
   };
 
-    useEffect(() => {
-      if (lastMessageRef.current) {
-        lastMessageRef.current.scrollIntoView({
-          behavior: "smooth",
-          block: "end",
-        });
-      }
-    }, [messages]);
-  
+  useEffect(() => {
+    if (lastMessageRef.current) {
+      lastMessageRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+      });
+    }
+  }, [messages]);
 
   return (
     <>
@@ -296,13 +308,12 @@ const Chat = () => {
                   className={`chatlist__item ${
                     selectedChat === chat ? "active" : ""
                   } `}
+                  key={index}
                 >
                   <div className="avatar">
                     <div className="avatar-img">
                       <img
-                        src={`http://localhost:4000/uploads/${
-                          getSender(chat.users).image
-                        }`}
+                        src={`${imageAPI}${getSender(chat.users).image}`}
                         alt="#"
                       />
                     </div>
@@ -329,7 +340,7 @@ const Chat = () => {
                   <div className="avatar">
                     <div className="avatar-img">
                       <img
-                        src={`http://localhost:4000/uploads/${selectedChat?.users[1]?.refId?.image}`}
+                        src={`${imageAPI}${selectedChat?.users[1]?.refId?.image}`}
                         alt="avatar"
                       />
                     </div>
@@ -367,6 +378,7 @@ const Chat = () => {
                         isSameSender(m) ? "other" : "me"
                       }`}
                       ref={i === messages.length - 1 ? lastMessageRef : null}
+                      key={i}
                     >
                       <div className="chat__item__content">
                         <div className="chat__msg">{m.content}</div>
@@ -380,8 +392,8 @@ const Chat = () => {
                           <img
                             src={
                               isSameSender(m)
-                                ? `http://localhost:4000/uploads/${selectedChat?.users[1]?.refId?.image}`
-                                : `http://localhost:4000/uploads/${selectedChat?.users[0]?.refId?.image}`
+                                ? `${imageAPI}${selectedChat?.users[1]?.refId?.image}`
+                                : `${imageAPI}${selectedChat?.users[0]?.refId?.image}`
                             }
                             alt="#"
                           />
@@ -427,7 +439,7 @@ const Chat = () => {
             <div className="profile__card user__profile__image">
               <div className="profile__image">
                 <img
-                  src={`http://localhost:4000/uploads/${selectedChat?.users[1]?.refId?.image}`}
+                  src={`${imageAPI}${selectedChat?.users[1]?.refId?.image}`}
                   alt="avatar"
                 />
               </div>

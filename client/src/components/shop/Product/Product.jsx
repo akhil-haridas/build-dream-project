@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { SHOPAPI } from "utils/api";
+import { SHOPAPI, imageAPI } from "utils/api";
 import Axios from "axios";
 
 const Product = () => {
@@ -15,13 +15,17 @@ const Product = () => {
   const [fileError, setFileError] = useState("");
 
   useEffect(() => {
-    Axios.get(`${SHOPAPI}getproduct?id=${id}`, { withCredentials: true })
+    const token = localStorage.getItem("token");
+    Axios.get(`${SHOPAPI}getproduct?id=${id}`, {
+      withCredentials: true,
+      headers: { Authorization: `Bearer ${token}` },
+    })
       .then((response) => {
         const product = response.data.product;
         setData(product);
         setEditPrice(product.price);
         setEditName(product.name);
-        setImagePreview(`http://localhost:4000/uploads/${product.image}`);
+        setImagePreview(`${imageAPI}${product.image}`);
       })
       .catch((error) => {
         console.log(error);
@@ -42,9 +46,12 @@ const Product = () => {
     if (editImage !== null) {
       formData.append("image", editImage);
     }
-
+    const token = localStorage.getItem("token");
     Axios.post(`${SHOPAPI}editproduct?id=${id}`, formData, {
-      headers: { "Content-Type": "multipart/form-data" },
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
       withCredentials: true,
     })
       .then((response) => {
@@ -61,8 +68,10 @@ const Product = () => {
 
   const handleDelete = () => {
     if (window.confirm("Are you sure you want to delete this work?")) {
+      const token = localStorage.getItem("token");
       Axios.delete(`${SHOPAPI}deleteproduct?id=${id}`, {
         withCredentials: true,
+        headers: { Authorization: `Bearer ${token}` },
       })
         .then((response) => {
           const result = response.data;
@@ -98,7 +107,6 @@ const Product = () => {
     }
   };
 
-
   return (
     <>
       <main>
@@ -127,10 +135,7 @@ const Product = () => {
               </li>
             </ul>
           </div>
-          <a
-            className="btn-download"
-            style={{ background: "red" }}
-          >
+          <a className="btn-download" style={{ background: "red" }}>
             <i className="bx bx-x-circle" />
             <span className="text" onClick={handleDelete}>
               Remove

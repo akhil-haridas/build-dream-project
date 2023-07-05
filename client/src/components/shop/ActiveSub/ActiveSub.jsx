@@ -5,7 +5,11 @@ const ActiveSub = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    Axios.get(`${SHOPAPI}getplan`, { withCredentials: true })
+    const token = localStorage.getItem("token");
+    Axios.get(`${SHOPAPI}getplan`, {
+      withCredentials: true,
+      headers: { Authorization: `Bearer ${token}` },
+    })
       .then((response) => {
         setData(response.data.plan);
       })

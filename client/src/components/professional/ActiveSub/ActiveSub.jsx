@@ -1,21 +1,23 @@
-import Axios  from 'axios'
-import React,{useEffect,useState} from 'react'
-import { PROFESSIONALAPI } from 'utils/api'
+import Axios from "axios";
+import React, { useEffect, useState } from "react";
+import { PROFESSIONALAPI } from "utils/api";
 
 const ActiveSub = () => {
+  const [data, setData] = useState([]);
 
-    const [data, setData] = useState([])
-    
-    useEffect(() => {
-        Axios.get(`${PROFESSIONALAPI}getplan`, { withCredentials: true })
-          .then((response) => {
-            setData(response.data.plan);
-           
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-    }, [])
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    Axios.get(`${PROFESSIONALAPI}getplan`, {
+      withCredentials: true,
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((response) => {
+        setData(response.data.plan);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   function formatDate(dateString) {
     const date = new Date(dateString);
@@ -90,6 +92,6 @@ const ActiveSub = () => {
       </div>
     </main>
   );
-}
+};
 
-export default ActiveSub
+export default ActiveSub;

@@ -1,34 +1,36 @@
-import React, { useState,useEffect } from 'react'
-import { Helmet } from 'react-helmet';
-import Axios from 'axios'
-import { USERAPI } from 'utils/api';
-import './templatemo-stand-blog.css'
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect } from "react";
+import { Helmet } from "react-helmet";
+import Axios from "axios";
+import { USERAPI, imageAPI } from "utils/api";
+import "./templatemo-stand-blog.css";
+import { useSelector } from "react-redux";
 
 const Magazine = ({ data, categories, requirements }) => {
-  
-  const user = useSelector((state)=>state.user.userToken)
+  const user = useSelector((state) => state.user.userToken);
 
-  const [category,setCategory] = useState("")
-const [requirement,setRequirement] =  useState("")
+  const [category, setCategory] = useState("");
+  const [requirement, setRequirement] = useState("");
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", options);
   };
 
-    const submitHandler = (event) => {
-      event.preventDefault();
-
-      Axios.post(
-        `${USERAPI}addrequirement`,
-        { category, requirement },
-        { withCredentials: true }
-      ).then((response) => {
-        alert("POSTED")
-      });
+  const submitHandler = (event) => {
+    event.preventDefault();
+    const token = localStorage.getItem("token");
+    Axios.post(
+      `${USERAPI}addrequirement`,
+      { category, requirement },
+      {
+        withCredentials: true,
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    ).then((response) => {
+      alert("POSTED");
+    });
   };
-  
+
   return (
     <>
       {user && (
@@ -49,8 +51,8 @@ const [requirement,setRequirement] =  useState("")
             />
 
             <select onChange={(e) => setCategory(e.target.value)}>
-              {categories.map((item) => (
-                <option>{item.name}</option>
+              {categories.map((item, index) => (
+                <option key={index}>{item.name}</option>
               ))}
             </select>
 
@@ -64,13 +66,14 @@ const [requirement,setRequirement] =  useState("")
             <div className="col-lg-8">
               <div className="all-blog-posts">
                 <div className="row">
-                  {data.map((item) => (
-                    <div className="col-lg-12">
+                  {data.map((item, index) => (
+                    <div className="col-lg-12" key={index}>
                       <div className="blog-post">
                         <div className="blog-thumb">
                           <img
-                            src={`http://localhost:4000/uploads/${item.image}`}
+                           
                             alt=""
+                            src={`${imageAPI}${item.image}`}
                           />
                         </div>
                         <div className="down-content">
@@ -109,4 +112,4 @@ const [requirement,setRequirement] =  useState("")
   );
 };
 
-export default Magazine
+export default Magazine;

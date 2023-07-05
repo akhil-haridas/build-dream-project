@@ -24,17 +24,17 @@ const SignupPage = () => {
   const [verify, setVerify] = useState(false);
   const [passwordError, setPasswordError] = useState("");
   const [imageError, setImageError] = useState("");
-  
-const nameChangeHandler = (e) => {
-  const nameValue = e.target.value;
-  setUserName(nameValue);
 
-  if (nameValue.trim() === "") {
-    setErrmessage("Name cannot be empty");
-  } else {
-    setErrmessage("");
-  }
-};
+  const nameChangeHandler = (e) => {
+    const nameValue = e.target.value;
+    setUserName(nameValue);
+
+    if (nameValue.trim() === "") {
+      setErrmessage("Name cannot be empty");
+    } else {
+      setErrmessage("");
+    }
+  };
 
   const mobileChangeHandler = (e) => {
     const mobileValue = e.target.value;
@@ -64,7 +64,7 @@ const nameChangeHandler = (e) => {
     const file = event.target.files[0];
 
     if (file) {
-      const allowedExtensions = ["jpg", "jpeg", "png", "gif","webp"];
+      const allowedExtensions = ["jpg", "jpeg", "png", "gif", "webp"];
 
       const extension = file.name.split(".").pop().toLowerCase();
 
@@ -88,76 +88,81 @@ const nameChangeHandler = (e) => {
         setImageError("");
       }
     }
-    
   };
 
   // Sent OTP
   const sentOTP = () => {
-    console.log('senet ')
-    if (mobile === "" || mobile.length < 10) return;
+    const token = localStorage.getItem("token");
     const number = "+91" + mobile;
-    let verify = new firebase.auth.RecaptchaVerifier("recaptcha-container");
-    auth
-      .signInWithPhoneNumber(number, verify)
-      .then((result) => {
-        setfinal(result);
-        setshow(true);
+    Axios.post(
+      `${USERAPI}verifynumber`,
+      { number },
+      {
+        withCredentials: true,
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    )
+      .then((response) => {
+        const result = response.data;
+        console.log(result);
+        if (result.status) {
+          setfinal(result.otp);
+          setshow(true);
+        } else {
+          setErrmessage(result.message);
+        }
       })
-      .catch((err) => {
-        alert(err);
+      .catch((error) => {
+        console.error(error);
       });
   };
 
   // Validate OTP
   const ValidateOtp = () => {
     if (otp === null || final === null) return;
-    final
-      .confirm(otp)
-      .then((result) => {
-        alert("otp match");
-        setVerify(true);
-        setshow(false);
-      })
-      .catch((err) => {
-        alert("Wrong code");
-      });
+    if (otp === final) {
+      alert("otp match");
+      setVerify(true);
+      setshow(false);
+    } else {
+      alert("Wrong code");
+    }
   };
 
-const submitHandler = (event) => {
-  event.preventDefault();
+  const submitHandler = (event) => {
+    event.preventDefault();
 
-  // Check if any field is empty
-  if (!userName || !password || !mobile || !file) {
-    setErrmessage("Please fill in all fields");
-    return;
-  }
+    // Check if any field is empty
+    if (!userName || !password || !mobile || !file) {
+      setErrmessage("Please fill in all fields");
+      return;
+    }
 
-  const formData = new FormData();
+    const formData = new FormData();
 
-  formData.append("userName", userName);
-  formData.append("password", password);
-  formData.append("mobile", mobile);
-  formData.append("role", "CLIENT");
-  formData.append("image", file);
+    formData.append("userName", userName);
+    formData.append("password", password);
+    formData.append("mobile", mobile);
+    formData.append("role", "CLIENT");
+    formData.append("image", file);
 
-  Axios.post(`${USERAPI}signup`, formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-    withCredentials: true,
-  })
-    .then((response) => {
-      const result = response.data;
-      console.log(result);
-      if (result.status) {
-        navigate("/login");
-      } else {
-        setErrmessage(result.message);
-      }
+    Axios.post(`${USERAPI}signup`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+      withCredentials: true,
     })
-    .catch((error) => {
-      console.error(error);
-    });
-};
-
+      .then((response) => {
+        const result = response.data;
+        console.log(result);
+        if (result.status) {
+          navigate("/login");
+        } else {
+          setErrmessage(result.message);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   const inputRef = useRef(null);
 
@@ -369,7 +374,6 @@ const submitHandler = (event) => {
           </div>
 
           <div className="flex flex-col items-start justify-start sm:m-[] sm:mt-[140px] sm:ml-[18px] w-[53%] sm:w-[95%] md:w-full sm:mt-0">
-    
             <h5 className="text-gray_500 uppercase font-normal text-[13px]">
               PASSWORD:
             </h5>

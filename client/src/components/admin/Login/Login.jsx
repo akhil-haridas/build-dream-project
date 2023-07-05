@@ -39,33 +39,36 @@ const Login = () => {
   };
 
   const submitHandler = (event) => {
-  console.log("SUBMIT")
+    const token = localStorage.getItem("token");
     event.preventDefault();
-    axios.post(
-      `${AdminAPI}login`,
-      { enteredEmail, enteredPassword },
-      { withCredentials: true }
-    ).then((response) => {
-     console.log("HEY RES")
-      const result = response.data.userLOGIN;
-  
-      if (result.status) {
+    axios
+      .post(
+        `${AdminAPI}login`,
+        { enteredEmail, enteredPassword },
+        {
+          withCredentials: true,
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      .then((response) => {
+        const result = response.data.userLOGIN;
 
-        dispatch(
-          adminActions.adminAddDetails({
-            name: result.name,
-            token: result.token,
-            role: result.role,
-          })
-        );
-        navigate("/admin");
-      } else {
-        console.log("hyyy");
-        setErrmessage(result.message);
-      }
-    }).catch((err) => {
-      console.log(err.message,"ERROR")
-    })
+        if (result.status) {
+          dispatch(
+            adminActions.adminAddDetails({
+              name: result.name,
+              token: result.token,
+              role: result.role,
+            })
+          );
+          navigate("/admin");
+        } else {
+          setErrmessage(result.message);
+        }
+      })
+      .catch((err) => {
+        console.log(err.message, "ERROR");
+      });
   };
   return (
     <form

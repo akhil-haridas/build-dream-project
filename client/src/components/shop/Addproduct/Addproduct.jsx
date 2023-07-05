@@ -1,10 +1,10 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import Axios from "axios";
 import { SHOPAPI } from "utils/api";
 import { useNavigate } from "react-router-dom";
 
 const Addproduct = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
@@ -36,15 +36,18 @@ const Addproduct = () => {
     formData.append("name", name);
     formData.append("price", price);
     formData.append("image", image);
-
+    const token = localStorage.getItem("token");
     Axios.post(`${SHOPAPI}addProduct`, formData, {
-      headers: { "Content-Type": "multipart/form-data" },
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
       withCredentials: true,
     })
       .then((response) => {
         if (response.data.added) {
           alert("Product added Successfully");
-          navigate('/shop/products')
+          navigate("/shop/products");
         }
 
         console.log(response.data);

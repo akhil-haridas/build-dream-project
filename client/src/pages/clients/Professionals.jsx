@@ -8,14 +8,14 @@ import { PROFESSIONALAPI, USERAPI } from "utils/api";
 import Axios from "axios";
 import { useNavigate } from "react-router-dom";
 const Professionals = () => {
-   const [locationFilter, setLocationFilter] = useState(null);
-   const [categoryFilter, setCategoryFilter] = useState(null);
+  const [locationFilter, setLocationFilter] = useState(null);
+  const [categoryFilter, setCategoryFilter] = useState(null);
   const [data, setData] = useState([]);
   const [category, setCategory] = useState([]);
   const [location, setLocation] = useState([]);
   const [filter, setFilter] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const handleLocationChange = (selectedOption) => {
     setLocationFilter(selectedOption);
   };
@@ -25,7 +25,11 @@ const Professionals = () => {
   };
 
   useEffect(() => {
-    Axios.get(`${PROFESSIONALAPI}getcategories`, { withCredentials: true })
+    const token = localStorage.getItem("token");
+    Axios.get(`${PROFESSIONALAPI}getcategories`, {
+      withCredentials: true,
+      headers: { Authorization: `Bearer ${token}` },
+    })
       .then((response) => {
         setCategory(response.data.data);
       })
@@ -40,17 +44,25 @@ const Professionals = () => {
   }));
 
   useEffect(() => {
-    Axios.get(`${USERAPI}professionals`, { withCredentials: true })
+    const token = localStorage.getItem("token");
+    Axios.get(`${USERAPI}professionals`, {
+      withCredentials: true,
+      headers: { Authorization: `Bearer ${token}` },
+    })
       .then((response) => {
         setData(response.data.DATA);
       })
       .catch((error) => {
-       navigate("/server-error");
+        navigate("/server-error");
       });
   }, []);
 
   useEffect(() => {
-    Axios.get(`${USERAPI}getlocations`, { withCredentials: true })
+    const token = localStorage.getItem("token");
+    Axios.get(`${USERAPI}getlocations`, {
+      withCredentials: true,
+      headers: { Authorization: `Bearer ${token}` },
+    })
       .then((response) => {
         setLocation(response.data.locationsAndDistricts);
       })
@@ -64,31 +76,30 @@ const Professionals = () => {
     label: `${location.location}, ${location.district}`,
   }));
 
-useEffect(() => {
-  let filteredData = data;
+  useEffect(() => {
+    let filteredData = data;
 
-  if (locationFilter) {
-    filteredData = filteredData.filter(
-      (professional) =>
-        professional.location === locationFilter.value.split(", ")[0]
-    );
-  }
+    if (locationFilter) {
+      filteredData = filteredData.filter(
+        (professional) =>
+          professional.location === locationFilter.value.split(", ")[0]
+      );
+    }
 
-  if (categoryFilter) {
-    filteredData = filteredData.filter(
-      (professional) => professional.expertise === categoryFilter.value
-    );
-  }
+    if (categoryFilter) {
+      filteredData = filteredData.filter(
+        (professional) => professional.expertise === categoryFilter.value
+      );
+    }
 
-  if (searchQuery) {
-    filteredData = filteredData.filter((professional) =>
-      professional.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  }
+    if (searchQuery) {
+      filteredData = filteredData.filter((professional) =>
+        professional.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
 
-  setFilter(filteredData);
-}, [data, locationFilter, categoryFilter, searchQuery]);
-
+    setFilter(filteredData);
+  }, [data, locationFilter, categoryFilter, searchQuery]);
 
   return (
     <>

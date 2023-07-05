@@ -36,6 +36,8 @@ router.get("/getlocationss", Controller.getLocations);
 
 router.get("/getmagazines", Controller.getMagazine);
 
+router.post("/verifynumber", Controller.verifyNumber);
+
 
 // Protected Routes
 

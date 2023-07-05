@@ -32,6 +32,7 @@ const Products = ({ data }) => {
             <div
               className="col-lg-4 col-md-6 col-sm-12 portfolio-item pb-[3rem] filter-1 wow fadeInUp"
               data-wow-delay="0.0s"
+              key={index}
             >
               <div className="portfolio-wrap">
                 <div className="portfolio-img">

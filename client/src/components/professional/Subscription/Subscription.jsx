@@ -1,52 +1,56 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./Subscription.css";
 import StripeCheckout from "react-stripe-checkout";
 import { PROFESSIONALAPI } from "utils/api";
 import Axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 
-
 const Subscription = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { id } = useParams();
-  
-const stripeKey =
-  "pk_test_51NGJfDSFVO01dJRlHD9wEPOuSFB4YIlzTsfr914chmYjO8jSTNgzj0v45mDSaLkrHvY7Ir6p80vnvHZDseEw6JGK00oj6j4wHH";
-  const handlePaymentSuccess = async (token, amount) => {
-  try {
-    const response = await Axios.post(
-      `${PROFESSIONALAPI}process-payment`,
-      {
-        token: token.id,
-        amount: amount.toString(),
-        currency: "INR",
-        userid: id,
-      },
-      { withCredentials: true }
-    );
 
-    console.log(response, "response");
-    if (response.status === 200) {
-      // if (response.data.requiresAction) {
-       
-      //   window.open(response.data.stripeSdkUrl, "_blank");
-      // } else {
+  const stripeKey =
+    "pk_test_51NGJfDSFVO01dJRlHD9wEPOuSFB4YIlzTsfr914chmYjO8jSTNgzj0v45mDSaLkrHvY7Ir6p80vnvHZDseEw6JGK00oj6j4wHH";
+  const handlePaymentSuccess = async (token, amount) => {
+    try {
+      const tokens = localStorage.getItem("token");
+
+      const response = await Axios.post(
+        `${PROFESSIONALAPI}process-payment`,
+        {
+          token: token.id,
+          amount: amount.toString(),
+          currency: "INR",
+          userid: id,
+        },
+        {
+          withCredentials: true,
+          headers: { Authorization: `Bearer ${tokens}` },
+        }
+      );
+
+      console.log(response, "response");
+      if (response.status === 200) {
+        // if (response.data.requiresAction) {
+
+        //   window.open(response.data.stripeSdkUrl, "_blank");
+        // } else {
         console.log("Payment succeeded!");
         console.log(response.data.message);
-      alert("Payment succeeded!");
-      navigate('/professional')
-      // }     
-    } else {
+        alert("Payment succeeded!");
+        navigate("/professional");
+        // }
+      } else {
+        console.error("Payment failed!");
+        console.error(response.data.message);
+        alert("Payment failed!"); // Show payment failure alert
+      }
+    } catch (error) {
       console.error("Payment failed!");
-      console.error(response.data.message);
+      console.error(error);
       alert("Payment failed!"); // Show payment failure alert
     }
-  } catch (error) {
-    console.error("Payment failed!");
-    console.error(error);
-    alert("Payment failed!"); // Show payment failure alert
-  }
-}; 
+  };
 
   return (
     <div className="price" id="price">

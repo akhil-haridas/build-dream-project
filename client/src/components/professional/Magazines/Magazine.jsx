@@ -1,31 +1,33 @@
-import React from 'react'
-import { useNavigate } from 'react-router-dom';
-import { PROFESSIONALAPI } from 'utils/api';
-import Axios from 'axios'
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { PROFESSIONALAPI, imageAPI } from "utils/api";
+import Axios from "axios";
 
 const Magazine = ({ data }) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-   const handleDelete = (id) => {
-     if (window.confirm("Are you sure you want to delete this work?")) {
-       Axios.delete(`${PROFESSIONALAPI}deletemagazine?id=${id}`, {
-         withCredentials: true,
-       })
-         .then((response) => {
-           const { success } = response.data;
-           console.log(response.data);
-           if (success) {
-             alert("Deleted successfully");
-             navigate("/professional/magazines");
-           } else {
-             console.log("Failed to delete magazine");
-           }
-         })
-         .catch((error) => {
-           console.error(error);
-         });
-     }
-   };
+  const handleDelete = (id) => {
+    const token = localStorage.getItem("token");
+    if (window.confirm("Are you sure you want to delete this work?")) {
+      Axios.delete(`${PROFESSIONALAPI}deletemagazine?id=${id}`, {
+        withCredentials: true,
+        headers: { Authorization: `Bearer ${token}` },
+      })
+        .then((response) => {
+          const { success } = response.data;
+          console.log(response.data);
+          if (success) {
+            alert("Deleted successfully");
+            navigate("/professional/magazines");
+          } else {
+            console.log("Failed to delete magazine");
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  };
   return (
     <main>
       <div className="head-title">
@@ -93,7 +95,7 @@ const Magazine = ({ data }) => {
               ) : (
                 data.map((obj, index) => {
                   return (
-                    <tr>
+                    <tr key={obj._id}>
                       <td>
                         <p style={{ marginTop: "50px", fontWeight: 600 }}>
                           {index + 1}
@@ -103,8 +105,8 @@ const Magazine = ({ data }) => {
                         <div className="d-flex align-items-center">
                           {obj.image ? (
                             <img
-                              src={`http://localhost:4000/uploads/${obj.image}`}
                               alt=""
+                              src={`${imageAPI}${obj.image}`}
                               style={{ width: "45px", height: "45px" }}
                               className="rounded-circle"
                             />
@@ -131,7 +133,9 @@ const Magazine = ({ data }) => {
                         </div>
                       </td>
                       <td>
-                        <p className="fw-normal mb-1">{obj.createdAt.slice(0,10)}</p>
+                        <p className="fw-normal mb-1">
+                          {obj.createdAt.slice(0, 10)}
+                        </p>
                       </td>
                       <td>
                         <button
@@ -170,6 +174,6 @@ const Magazine = ({ data }) => {
       </div>
     </main>
   );
-}
+};
 
-export default Magazine
+export default Magazine;

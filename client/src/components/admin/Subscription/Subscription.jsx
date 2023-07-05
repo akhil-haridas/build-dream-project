@@ -4,7 +4,11 @@ import Axios from "axios";
 const Subscription = () => {
   const [data, setData] = useState([]);
   useEffect(() => {
-    Axios.get(`${AdminAPI}getsubscriptions`, { withCredentials: true })
+    const token = localStorage.getItem("token");
+    Axios.get(`${AdminAPI}getsubscriptions`, {
+      withCredentials: true,
+      headers: { Authorization: `Bearer ${token}` },
+    })
       .then((response) => {
         setData(response.data.subscriptions);
       })
@@ -73,7 +77,7 @@ const Subscription = () => {
               ) : (
                 data.map((obj, index) => {
                   return (
-                    <tr>
+                    <tr key={obj._id}>
                       <td>
                         <p style={{ fontWeight: 600 }}>{index + 1}</p>
                       </td>
@@ -90,7 +94,10 @@ const Subscription = () => {
                         </div>
                       </td>
                       <td>
-                        <p className="fw-normal mb-1" style={{color:"green"}}>
+                        <p
+                          className="fw-normal mb-1"
+                          style={{ color: "green" }}
+                        >
                           &#x20B9;&nbsp;{obj.plan}
                         </p>
                       </td>
@@ -100,7 +107,7 @@ const Subscription = () => {
                         <p>{obj.createdAt.slice(0, 10)}</p>
                       </td>
                       <td>
-                              <p>{ obj.expiry.slice(0,15)}</p>
+                        <p>{obj.expiry.slice(0, 15)}</p>
                       </td>
                     </tr>
                   );

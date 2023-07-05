@@ -1,28 +1,32 @@
-import Breadcrumb from 'components/client/Breadcrumb/Breadcrumb';
-import Footer from 'components/client/Footer/Footer';
+import Breadcrumb from "components/client/Breadcrumb/Breadcrumb";
+import Footer from "components/client/Footer/Footer";
 import MagazinePage from "components/client/Magazines/Magazine";
-import Navbar from 'components/client/Navbar/Navbar';
-import React, { useEffect, useState } from 'react'
-import Axios from 'axios'
-import { USERAPI } from 'utils/api';
-import { useNavigate } from 'react-router-dom';
+import Navbar from "components/client/Navbar/Navbar";
+import React, { useEffect, useState } from "react";
+import Axios from "axios";
+import { USERAPI } from "utils/api";
+import { useNavigate } from "react-router-dom";
 
 const Magazines = () => {
-  const [data, setData] = useState([])
-  const [category, setCategory] = useState([])
-  const [requirements,setRequirements] = useState([])
-  const navigate = useNavigate()
+  const [data, setData] = useState([]);
+  const [category, setCategory] = useState([]);
+  const [requirements, setRequirements] = useState([]);
+  const navigate = useNavigate();
   useEffect(() => {
-    Axios.get(`${USERAPI}getmagazines`, { withCredentials: true })
+    const token = localStorage.getItem("token");
+    Axios.get(`${USERAPI}getmagazines`, {
+      withCredentials: true,
+      headers: { Authorization: `Bearer ${token}` },
+    })
       .then((response) => {
         setData(response.data.magazines);
-        setCategory(response.data.categories)
+        setCategory(response.data.categories);
         setRequirements(response.data.requirements);
       })
       .catch((error) => {
-       navigate("/server-error");
+        navigate("/server-error");
       });
-  },[])
+  }, []);
   return (
     <>
       <Navbar active={"MAGAZINE"} />
@@ -35,6 +39,6 @@ const Magazines = () => {
       <Footer />
     </>
   );
-}
+};
 
-export default Magazines
+export default Magazines;

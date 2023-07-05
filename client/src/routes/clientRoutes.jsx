@@ -23,14 +23,16 @@ const ClientRoutes = () => {
   const [cookies] = useCookies(["jwt"]);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (Object.keys(cookies).length > 0) {
-      const { name, token, role, id } = cookies.jwt;
-      if (role === "CLIENT") {
-        dispatch(clientActions.clientAddDetails({ name, token, role, id }));
-      }
-    }
-  }, []);
+useEffect(() => {
+  const name = localStorage.getItem("name");
+  const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
+  const id = localStorage.getItem("id");
+
+  if (role === "CLIENT") {
+    dispatch(clientActions.clientAddDetails({ name, token, role, id }));
+  }
+}, []);
 
   const user = useSelector((state) => {
     return state?.user?.userToken;

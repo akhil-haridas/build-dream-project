@@ -90,7 +90,7 @@ exports.Signup = async (req, res) => {
         html: `
           <p>Dear ${userName},</p>
           <p>You have requested to join our community. Please click the link below to verify your email:</p>
-          <a href="http://localhost:4000/professional/verify-email/${verificationToken}">Verify Email</a>
+          <a href="https://build-dream-server.onrender.com/professional/verify-email/${verificationToken}">Verify Email</a>
           <p>If you did not request to join our community, you can ignore this email.</p>
         `,
       };
@@ -196,7 +196,7 @@ exports.Login = async (req, res) => {
 
       if (isMatch) {
         const token = jwt.sign(
-          { id: professional[0]._id },
+          { id: professional[0]._id ,role:"professional"},
           process.env.JWT_KEY,
           {
             expiresIn: "30d",

@@ -1,12 +1,12 @@
-import React,{useState,useEffect} from 'react'
-import {useNavigate, useParams } from 'react-router-dom';
-import { PROFESSIONALAPI } from 'utils/api';
-import Axios from 'axios'
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { PROFESSIONALAPI, imageAPI } from "utils/api";
+import Axios from "axios";
 
 const Work = () => {
-const navigate = useNavigate()
+  const navigate = useNavigate();
   const { id } = useParams();
-  
+
   const [data, setData] = useState([]);
   const [editImage, setEditImage] = useState(false);
   const [editDescription, setEditDescription] = useState(false);
@@ -14,21 +14,24 @@ const navigate = useNavigate()
   const [imagePreview, setImagePreview] = useState(null);
   const [fileError, setFileError] = useState("");
 
-    useEffect(() => {
+  useEffect(() => {
+    const token = localStorage.getItem("token");
     Axios.get(`${PROFESSIONALAPI}getwork?id=${id}`, {
       withCredentials: true,
-    }).then((response) => {
-      const work = response.data.work;
-      setData(work);
-      setEditTitle(work.title);
-      setEditDescription(work.description);
-      setImagePreview(`http://localhost:4000/uploads/${work.image}`);
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((response) => {
+        const work = response.data.work;
+        setData(work);
+        setEditTitle(work.title);
+        setEditDescription(work.description);
+        setImagePreview(`${imageAPI}${work.image}`);
       })
       .catch((error) => {
         console.log(error);
       });
-    }, [id]);
-  
+  }, [id]);
+
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
@@ -41,47 +44,50 @@ const navigate = useNavigate()
       formData.append("description", editDescription);
     }
     if (editImage !== null) {
-        formData.append("image", editImage);
+      formData.append("image", editImage);
     }
-    
 
-
+    const token = localStorage.getItem("token");
     Axios.post(`${PROFESSIONALAPI}editwork?id=${id}`, formData, {
-      headers: { "Content-Type": "multipart/form-data" },
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
       withCredentials: true,
     })
       .then((response) => {
         const result = response.data;
         console.log(result);
         if (result.status) {
-            alert("Updated successfully");
-            navigate("/professional/works");
-        } 
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-   
-  };
-const handleDelete = () => {
-  if (window.confirm("Are you sure you want to delete this work?")) {
-    Axios.delete(`${PROFESSIONALAPI}deletework?id=${id}`, {
-      withCredentials: true,
-    })
-      .then((response) => {
-        const result = response.data;
-        console.log(result);
-        if (result.status) {
-          alert("Deleted successfully");
-         navigate("/professional/works")
+          alert("Updated successfully");
+          navigate("/professional/works");
         }
       })
       .catch((error) => {
         console.error(error);
       });
-  }
   };
-  
+  const handleDelete = () => {
+    const token = localStorage.getItem("token");
+    if (window.confirm("Are you sure you want to delete this work?")) {
+      Axios.delete(`${PROFESSIONALAPI}deletework?id=${id}`, {
+        withCredentials: true,
+        headers: { Authorization: `Bearer ${token}` },
+      })
+        .then((response) => {
+          const result = response.data;
+          console.log(result);
+          if (result.status) {
+            alert("Deleted successfully");
+            navigate("/professional/works");
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  };
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     const reader = new FileReader();
@@ -101,9 +107,6 @@ const handleDelete = () => {
       }
     }
   };
-
-
-
 
   return (
     <main>
@@ -238,9 +241,6 @@ const handleDelete = () => {
       </div>
     </main>
   );
-}
+};
 
-export default Work
-
-
-
+export default Work;

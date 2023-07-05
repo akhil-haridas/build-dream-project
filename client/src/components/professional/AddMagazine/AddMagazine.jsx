@@ -1,64 +1,66 @@
-import React,{useState,useEffect} from 'react'
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { PROFESSIONALAPI } from 'utils/api';
-import Axios from 'axios'
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { PROFESSIONALAPI } from "utils/api";
+import Axios from "axios";
 
 const AddMagazine = () => {
+  const user = useSelector((state) => state.professional.professionalName);
+  const navigate = useNavigate();
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [image, setImage] = useState(null);
+  const [fileError, setFileError] = useState("");
 
-      const user = useSelector((state) => state.professional.professionalName);
-      const navigate = useNavigate();
-      const [name, setName] = useState("");
-      const [description, setDescription] = useState("");
-      const [image, setImage] = useState(null);
-      const [fileError, setFileError] = useState("");
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
 
-      const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        const reader = new FileReader();
+    if (file) {
+      if (
+        file.type === "image/jpeg" ||
+        file.type === "image/jpg" ||
+        file.type === "image/webp"
+      ) {
+        reader.onloadend = () => {
+          setImage(file);
+          setFileError("");
+        };
+        reader.readAsDataURL(file);
+      } else {
+        setImage(null);
+        setFileError("Please select a JPEG or JPG file.");
+      }
+    }
+  };
 
-        if (file) {
-          if (
-            file.type === "image/jpeg" ||
-            file.type === "image/jpg" ||
-            file.type === "image/webp"
-          ) {
-            reader.onloadend = () => {
-              setImage(file);
-              setFileError("");
-            };
-            reader.readAsDataURL(file);
-          } else {
-            setImage(null);
-            setFileError("Please select a JPEG or JPG file.");
-          }
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const formData = new FormData();
+    formData.append("title", name);
+    formData.append("description", description);
+    formData.append("image", image);
+    const token = localStorage.getItem("token");
+    Axios.post(`${PROFESSIONALAPI}addmagazine`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
+      withCredentials: true,
+    })
+      .then((response) => {
+        if (response.data.success) {
+          alert("Magazine Added SuccessFully");
+          navigate("/professional/magazines");
         }
-      };
 
-      const handleSubmit = (event) => {
-        event.preventDefault();
-
-        const formData = new FormData();
-        formData.append("title", name);
-        formData.append("description", description);
-        formData.append("image", image);
-
-        Axios.post(`${PROFESSIONALAPI}addmagazine`, formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-          withCredentials: true,
-        })
-          .then((response) => {
-            if (response.data.success) {
-              alert("Magazine Added SuccessFully");
-              navigate("/professional/magazines");
-            }
-
-            console.log(response.data);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      };
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   return (
     <main>
       <div className="head-title">
@@ -149,12 +151,12 @@ const AddMagazine = () => {
             />
           </div>
           <button className="formbold-btn" onClick={handleSubmit}>
-           Add Magazine
+            Add Magazine
           </button>
         </div>
       </div>
     </main>
   );
-}
+};
 
-export default AddMagazine
+export default AddMagazine;

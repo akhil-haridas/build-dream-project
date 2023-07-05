@@ -1,24 +1,23 @@
-import React, { useEffect, useState } from 'react'
-import Axios from 'axios';
-import { SHOPAPI, USERAPI } from 'utils/api';
+import React, { useEffect, useState } from "react";
+import Axios from "axios";
+import { SHOPAPI, USERAPI } from "utils/api";
 
 import Breadcrumb from "components/client/Breadcrumb/Breadcrumb";
 import Footer from "components/client/Footer/Footer";
 import SelectInput from "components/client/SelectInput/SelectInput";
-import Navbar from 'components/client/Navbar/Navbar'
-import ShopProfile from 'components/client/Shops/Shops';
-import { useNavigate } from 'react-router-dom';
+import Navbar from "components/client/Navbar/Navbar";
+import ShopProfile from "components/client/Shops/Shops";
+import { useNavigate } from "react-router-dom";
 
 const Shops = () => {
-
-   const [locationFilter, setLocationFilter] = useState(null);
-   const [categoryFilter, setCategoryFilter] = useState(null);
-   const [data, setData] = useState(null);
-   const [category, setCategory] = useState([]);
-   const [location, setLocation] = useState([]);
-   const [filter, setFilter] = useState([]);
-     const [searchQuery, setSearchQuery] = useState("");
-const navigate  = useNavigate()
+  const [locationFilter, setLocationFilter] = useState(null);
+  const [categoryFilter, setCategoryFilter] = useState(null);
+  const [data, setData] = useState(null);
+  const [category, setCategory] = useState([]);
+  const [location, setLocation] = useState([]);
+  const [filter, setFilter] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
   const handleLocationChange = (selectedOption) => {
     setLocationFilter(selectedOption);
   };
@@ -26,71 +25,80 @@ const navigate  = useNavigate()
   const handleCategoryChange = (selectedOption) => {
     setCategoryFilter(selectedOption);
   };
-    useEffect(() => {
-      Axios.get(`${SHOPAPI}getcategories`, { withCredentials: true })
-        .then((response) => {
-          setCategory(response.data.data);
-        })
-        .catch((error) => {
-          navigate("/server-error");
-        });
-    }, []);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    Axios.get(`${SHOPAPI}getcategories`, {
+      withCredentials: true,
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((response) => {
+        setCategory(response.data.data);
+      })
+      .catch((error) => {
+        navigate("/server-error");
+      });
+  }, []);
   const categoryOptions = category.map((item, index) => ({
     label: item,
     value: item,
   }));
-          useEffect(() => {
-            Axios.get(`${USERAPI}shops`, { withCredentials: true })
-              .then((response) => {
-                setData(response.data.DATA);
-               
-              })
-              .catch((error) => {
-              navigate("/server-error");
-              });
-          }, []);
-  
-    useEffect(() => {
-      Axios.get(`${USERAPI}getlocationss`, { withCredentials: true })
-        .then((response) => {
-          setLocation(response.data.locationsAndDistricts);
-        })
-        .catch((error) => {
-           navigate("/server-error");
-        });
-    }, []);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    Axios.get(`${USERAPI}shops`, {
+      withCredentials: true,
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((response) => {
+        setData(response.data.DATA);
+      })
+      .catch((error) => {
+        navigate("/server-error");
+      });
+  }, []);
 
-    const locations = location.map((location) => ({
-      value: `${location.location}, ${location.district}`,
-      label: `${location.location}, ${location.district}`,
-    }));
-useEffect(() => {
-  let filteredData = data;
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    Axios.get(`${USERAPI}getlocationss`, {
+      withCredentials: true,
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((response) => {
+        setLocation(response.data.locationsAndDistricts);
+      })
+      .catch((error) => {
+        navigate("/server-error");
+      });
+  }, []);
 
-  if (locationFilter) {
-    filteredData = filteredData.filter(
-      (professional) =>
-        professional.location === locationFilter.value.split(", ")[0]
-    );
-  }
+  const locations = location.map((location) => ({
+    value: `${location.location}, ${location.district}`,
+    label: `${location.location}, ${location.district}`,
+  }));
+  useEffect(() => {
+    let filteredData = data;
 
-  if (categoryFilter) {
-    filteredData = filteredData.filter(
-      (professional) => professional.category === categoryFilter.value
-    );
-  }
+    if (locationFilter) {
+      filteredData = filteredData.filter(
+        (professional) =>
+          professional.location === locationFilter.value.split(", ")[0]
+      );
+    }
 
-  if (searchQuery) {
-    filteredData = filteredData.filter((professional) =>
-      professional.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  }
+    if (categoryFilter) {
+      filteredData = filteredData.filter(
+        (professional) => professional.category === categoryFilter.value
+      );
+    }
 
-  setFilter(filteredData);
-}, [data, locationFilter, categoryFilter, searchQuery]);
+    if (searchQuery) {
+      filteredData = filteredData.filter((professional) =>
+        professional.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
 
+    setFilter(filteredData);
+  }, [data, locationFilter, categoryFilter, searchQuery]);
 
-  
   return (
     <>
       <Navbar active={"SHOPS"} />
@@ -145,6 +153,6 @@ useEffect(() => {
       <Footer />
     </>
   );
-}
+};
 
-export default Shops
+export default Shops;

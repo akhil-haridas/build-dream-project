@@ -1,9 +1,9 @@
-import React,{useState} from 'react'
-import { useNavigate } from 'react-router-dom';
-import { PROFESSIONALAPI } from 'utils/api';
-import Axios from 'axios'
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { PROFESSIONALAPI, imageAPI } from "utils/api";
+import Axios from "axios";
 const Works = ({ data, updateData }) => {
-  console.log(data,"WORKS PAGE")
+  console.log(data, "WORKS PAGE");
   const navigate = useNavigate();
   const [displayCount, setDisplayCount] = useState(6);
 
@@ -16,9 +16,11 @@ const Works = ({ data, updateData }) => {
   };
 
   const handleDelete = (id) => {
+    const token = localStorage.getItem("token");
     if (window.confirm("Are you sure you want to delete this work?")) {
       Axios.delete(`${PROFESSIONALAPI}deletework?id=${id}`, {
         withCredentials: true,
+        headers: { Authorization: `Bearer ${token}` },
       })
         .then((response) => {
           const result = response.data;
@@ -101,7 +103,7 @@ const Works = ({ data, updateData }) => {
               ) : (
                 data.map((obj, index) => {
                   return (
-                    <tr>
+                    <tr key={obj._id}>
                       <td>
                         <p style={{ marginTop: "21px", fontWeight: 600 }}>
                           {index + 1}
@@ -111,7 +113,7 @@ const Works = ({ data, updateData }) => {
                         <div className="d-flex align-items-center">
                           {obj.image ? (
                             <img
-                              src={`http://localhost:4000/uploads/${obj.image}`}
+                              src={`${imageAPI}${obj.image}`}
                               alt=""
                               style={{ width: "45px", height: "45px" }}
                               className="rounded-circle"
@@ -180,4 +182,4 @@ const Works = ({ data, updateData }) => {
   );
 };
 
-export default Works
+export default Works;

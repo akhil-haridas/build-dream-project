@@ -13,18 +13,20 @@ import { useNavigate } from "react-router-dom";
 const Landing = () => {
   const [pro, setPro] = useState([]);
   const [shop, setShop] = useState([]);
-const navigate = useNavigate()
+  const navigate = useNavigate();
   useEffect(() => {
-    Axios.get(`${USERAPI}getcategories`, { withCredentials: true })
+    const token = localStorage.getItem("token");
+    Axios.get(`${USERAPI}getcategories`, {
+      withCredentials: true,
+      headers: { Authorization: `Bearer ${token}` },
+    })
       .then((response) => {
         setPro(response.data.proDATA);
         setShop(response.data.shopDATA);
-        console.log(response.data.proDATA);
-        console.log(response.data.shopDATA);
       })
       .catch((error) => {
-        console.log(error)
-        // navigate("/server-error");
+        console.log(error);
+        navigate("/server-error");
       });
   }, []);
   return (

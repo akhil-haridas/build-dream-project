@@ -14,11 +14,14 @@ const LoginPage = () => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-
+  const token = localStorage.getItem("token");
     Axios.post(
       `${USERAPI}login`,
       { mobileNumber, password },
-      { withCredentials: true }
+      {
+        withCredentials: true,
+        headers: { Authorization: `Bearer ${token}` },
+      }
     ).then((response) => {
       const result = response.data.userLOGIN;
       if (result.status) {
@@ -30,6 +33,11 @@ const LoginPage = () => {
             id: result.id,
           })
         );
+        localStorage.setItem("name", result.name);
+        localStorage.setItem("token", result.token);
+        localStorage.setItem("role", result.role);
+        localStorage.setItem("id", result.id);
+
         navigate("/");
       } else {
         setErrmessage(result.message);

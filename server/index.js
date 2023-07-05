@@ -17,7 +17,11 @@ app.use(
     origin: [process.env.ORIGIN],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
-    allowedHeaders: ["Content-Type", "Access-Control-Allow-Headers"],
+    allowedHeaders: [
+      "Content-Type",
+      "Access-Control-Allow-Headers",
+      "Authorization",
+    ],
   })
 );
 

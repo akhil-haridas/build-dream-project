@@ -40,9 +40,12 @@ const Addwork = () => {
     formData.append("title", name);
     formData.append("description", description);
     formData.append("image", image);
-
+    const token = localStorage.getItem("token");
     Axios.post(`${PROFESSIONALAPI}addWork`, formData, {
-      headers: { "Content-Type": "multipart/form-data" },
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
       withCredentials: true,
     })
       .then((response) => {
@@ -130,7 +133,11 @@ const Addwork = () => {
           </div>
           <div>
             <label htmlFor="phone" className="formbold-form-label">
-              {fileError && <p className="file-error" style={{color:"red"}}>{fileError}</p>}
+              {fileError && (
+                <p className="file-error" style={{ color: "red" }}>
+                  {fileError}
+                </p>
+              )}
               <i className="bx bx-image-add" /> Attach Image
             </label>
             <input

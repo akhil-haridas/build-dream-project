@@ -1,9 +1,10 @@
 import React from 'react'
+import { imageAPI } from 'utils/api';
 
 const Avatar = ({image}) => {
   return (
     <img
-      src={`http://localhost:4000/uploads/${image}`}
+      src={`${imageAPI}${image}`}
       alt="avatar"
     />
   );

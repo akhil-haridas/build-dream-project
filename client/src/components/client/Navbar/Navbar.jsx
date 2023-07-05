@@ -12,11 +12,13 @@ const Navbar = ({active}) => {
 
     const dispatch = useDispatch();
     const [cookie, setCookie, removeCookie] = useCookies(["jwt"]);
-    const logout = () => {
-      removeCookie("jwt");
-      dispatch(clientActions.clientLogout());
-      navigate("/login");
-    };
+  const logout = () => {
+    removeCookie("jwt");
+    dispatch(clientActions.clientLogout());
+    localStorage.clear();
+    navigate("/login");
+  };
+
   
   
     useEffect(() => {

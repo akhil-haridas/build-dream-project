@@ -1,42 +1,53 @@
-import React,{useEffect,useState} from 'react'
-import './Table.css'
-import Axios from 'axios';
-import { AdminAPI } from 'utils/api';
+import React, { useEffect, useState } from "react";
+import "./Table.css";
+import Axios from "axios";
+import { AdminAPI } from "utils/api";
 const Table = () => {
+  const [data, setData] = useState([]);
+  const [allow, setAllow] = useState(0);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    Axios.get(`${AdminAPI}permissions`, {
+      withCredentials: true,
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((response) => {
+        setData(response.data.data);
+        console.log(response.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [allow]);
 
-const [data,setData] = useState([])
-const [allow,setAllow] = useState(0)
-      useEffect(() => {
-        Axios.get(`${AdminAPI}permissions`, { withCredentials: true })
-            .then((response) => {
-              setData(response.data.data);
-            console.log(response.data.data)
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }, [allow]);
-    
-      const allowUSER = (id) => {
-        Axios.get(`${AdminAPI}allow-user/${id}`, { withCredentials: true })
-          .then((response) => {
-              setAllow((prevState) => prevState + 1);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-    };
-    
-          const denyUSER = (id) => {
-            Axios.get(`${AdminAPI}deny-user/${id}`, { withCredentials: true })
-              .then((response) => {
-                setAllow((prevState) => prevState + 1);
-              })
-              .catch((error) => {
-                console.log(error);
-              });
-    };
-    
+  const allowUSER = (id) => {
+    const token = localStorage.getItem("token");
+    Axios.get(`${AdminAPI}allow-user/${id}`, {
+      withCredentials: true,
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((response) => {
+        setAllow((prevState) => prevState + 1);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const denyUSER = (id) => {
+    const token = localStorage.getItem("token");
+    Axios.get(`${AdminAPI}deny-user/${id}`, {
+      withCredentials: true,
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((response) => {
+        setAllow((prevState) => prevState + 1);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <main>
       <div className="head-title">
@@ -86,55 +97,62 @@ const [allow,setAllow] = useState(0)
             </thead>
             <tbody>
               {data.length === 0 ? (
-    <tr>
-      <td colSpan={6}>
-        <p>Users Not Found</p>
-      </td>
-    </tr>
-  ) : ( data.map((obj, index) => {
-                return (
-                  <tr>
-                    <td>
-                      <p style={{ marginTop: "21px", fontWeight: 600 }}>1</p>
-                    </td>
+                <tr>
+                  <td colSpan={6}>
+                    <p>Users Not Found</p>
+                  </td>
+                </tr>
+              ) : (
+                data.map((obj, index) => {
+                  return (
+                    <tr key={obj._id}>
+                      <td>
+                        <p style={{ marginTop: "21px", fontWeight: 600 }}>1</p>
+                      </td>
 
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <div className="ms-3">
-                          <p className="fw-bold " style={{ fontWeight: 600 }}>
-                            {obj.name}
-                          </p>
-                          <p className="text-muted mb-0">{obj.email}</p>
+                      <td>
+                        <div className="d-flex align-items-center">
+                          <div className="ms-3">
+                            <p className="fw-bold " style={{ fontWeight: 600 }}>
+                              {obj.name}
+                            </p>
+                            <p className="text-muted mb-0">{obj.email}</p>
+                          </div>
                         </div>
-                      </div>
-                    </td>
-                    <td>
-                      <p className="fw-normal ">{obj.createdAt.slice(0, 10)}</p>
-                    </td>
-                    <td>{obj.role}</td>
-                    <td onClick={() => allowUSER(obj._id)}>
-                      <p>
+                      </td>
+                      <td>
+                        <p className="fw-normal ">
+                          {obj.createdAt.slice(0, 10)}
+                        </p>
+                      </td>
+                      <td>{obj.role}</td>
+                      <td onClick={() => allowUSER(obj._id)}>
+                        <p>
+                          <a>
+                            <span className="status process">Allow</span>
+                          </a>
+                        </p>
+                      </td>
+                      <td onClick={() => denyUSER(obj._id)}>
                         <a>
-                          <span className="status process">Allow</span>
+                          <span
+                            className="status"
+                            style={{ background: "red" }}
+                          >
+                            Deny
+                          </span>
                         </a>
-                      </p>
-                    </td>
-                    <td onClick={() => denyUSER(obj._id)}>
-                      <a>
-                        <span className="status" style={{ background: "red" }}>
-                          Deny
-                        </span>
-                      </a>
-                    </td>
-                  </tr>
-                );
-              }))}
+                      </td>
+                    </tr>
+                  );
+                })
+              )}
             </tbody>
           </table>
         </div>
       </div>
     </main>
   );
-}
+};
 
-export default Table
+export default Table;

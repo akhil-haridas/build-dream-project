@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import "./Myaccount.css";
 import { Helmet } from "react-helmet";
-import { SHOPAPI } from "utils/api";
+import { SHOPAPI, imageAPI } from "utils/api";
 import Axios from "axios";
 import { useNavigate } from "react-router-dom";
 const Myaccount = () => {
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [data, setData] = useState([]);
   const [name, setName] = useState("");
@@ -39,7 +38,11 @@ const Myaccount = () => {
   };
 
   useEffect(() => {
-    Axios.get(`${SHOPAPI}getdetailss`, { withCredentials: true })
+    const token = localStorage.getItem("token");
+    Axios.get(`${SHOPAPI}getdetailss`, {
+      withCredentials: true,
+      headers: { Authorization: `Bearer ${token}` },
+    })
       .then((response) => {
         setData(response.data.data);
         setExpertType(response.data.data.businessType);
@@ -54,21 +57,25 @@ const Myaccount = () => {
     event.preventDefault();
 
     const formData = new FormData();
-  
+
     formData.append("name", name);
     formData.append("image", file);
     formData.append("businessType", expertType);
 
+    const token = localStorage.getItem("token");
+
     Axios.post(`${SHOPAPI}generaledit`, formData, {
-      headers: { "Content-Type": "multipart/form-data" },
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
       withCredentials: true,
     })
       .then((response) => {
         const result = response.data.user;
         setData(result);
-        alert("Updated Successfully")
-        navigate('/shop/myaccount')
-        
+        alert("Updated Successfully");
+        navigate("/shop/myaccount");
       })
       .catch((error) => {
         console.error(error);
@@ -91,16 +98,19 @@ const Myaccount = () => {
     formData.append("twitter", twitter);
     formData.append("link", link);
     formData.append("insta", insta);
-
+    const token = localStorage.getItem("token");
     Axios.post(`${SHOPAPI}socialedit`, formData, {
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
       withCredentials: true,
     })
       .then((response) => {
         const result = response.data.user;
         setData(result);
-           alert("Updated Successfully");
-           navigate("/shop/myaccount");
+        alert("Updated Successfully");
+        navigate("/shop/myaccount");
       })
       .catch((error) => {
         console.error(error);
@@ -116,16 +126,19 @@ const Myaccount = () => {
     formData.append("location", location);
     formData.append("district", district);
     formData.append("mobile", mobile);
-
+    const token = localStorage.getItem("token");
     Axios.post(`${SHOPAPI}infoedit`, formData, {
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
       withCredentials: true,
     })
       .then((response) => {
         const result = response.data.user;
         setData(result);
-           alert("Updated Successfully");
-           navigate("/shop/myaccount");
+        alert("Updated Successfully");
+        navigate("/shop/myaccount");
       })
       .catch((error) => {
         console.error(error);
@@ -139,9 +152,12 @@ const Myaccount = () => {
 
     formData.append("current", current);
     formData.append("password", password);
-
+    const token = localStorage.getItem("token");
     Axios.post(`${SHOPAPI}changepass`, formData, {
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
       withCredentials: true,
     })
       .then((response) => {
@@ -227,10 +243,7 @@ const Myaccount = () => {
                       <img
                         src={
                           data.image
-                            ? `http://localhost:4000/uploads/${data.image.replace(
-                                "\\",
-                                "/"
-                              )}`
+                            ? `${imageAPI}${data.image}`
                             : "/images/ImageUpload.png"
                         }
                         alt=""

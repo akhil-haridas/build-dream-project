@@ -12,7 +12,7 @@ const Subscription = () => {
   const stripeKey =
     "pk_test_51NGJfDSFVO01dJRlHD9wEPOuSFB4YIlzTsfr914chmYjO8jSTNgzj0v45mDSaLkrHvY7Ir6p80vnvHZDseEw6JGK00oj6j4wHH";
   const handlePaymentSuccess = async (token, amount) => {
-    console.log(amount, "amount");
+    const tokens = localStorage.getItem("token");
     try {
       const response = await Axios.post(
         `${SHOPAPI}process-payment`,
@@ -22,7 +22,10 @@ const Subscription = () => {
           currency: "INR",
           userid: id,
         },
-        { withCredentials: true }
+        {
+          withCredentials: true,
+          headers: { Authorization: `Bearer ${tokens}` },
+        }
       );
 
       console.log(response, "response");
@@ -31,15 +34,13 @@ const Subscription = () => {
 
         //   window.open(response.data.stripeSdkUrl, "_blank");
         // } else {
-        console.log("Payment succeeded!");
-        console.log(response.data.message);
         alert("Payment succeeded!");
-        navigate('/shop')
+        navigate("/shop");
         // }
       } else {
         console.error("Payment failed!");
         console.error(response.data.message);
-        alert("Payment failed!"); 
+        alert("Payment failed!");
       }
     } catch (error) {
       console.error("Payment failed!");

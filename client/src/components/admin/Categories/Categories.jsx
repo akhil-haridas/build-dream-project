@@ -1,31 +1,38 @@
-import React,{useEffect,useState} from 'react'
-import { useNavigate } from 'react-router-dom';
-import { AdminAPI } from 'utils/api';
-import  Axios  from 'axios';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { AdminAPI, imageAPI } from "utils/api";
+import Axios from "axios";
 const Categories = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const [data, setData] = useState([])
-  const [allow,setAllow] = useState(1)
-        useEffect(() => {
-          Axios.get(`${AdminAPI}getcategories`, { withCredentials: true })
-            .then((response) => {
-              setData(response.data.categories);
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        }, [allow]);
+  const [data, setData] = useState([]);
+  const [allow, setAllow] = useState(1);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    Axios.get(`${AdminAPI}getcategories`, {
+      withCredentials: true,
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((response) => {
+        setData(response.data.categories);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [allow]);
   const removeCategory = (id) => {
-    console.log(id)
-     Axios.get(`${AdminAPI}removeCategory/${id}`, { withCredentials: true })
-       .then((response) => {
-         setAllow((prevState) => prevState + 1);
-       })
-       .catch((error) => {
-         console.log(error);
-       });
-  }
+    const token = localStorage.getItem("token");
+    Axios.get(`${AdminAPI}removeCategory/${id}`, {
+      withCredentials: true,
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((response) => {
+        setAllow((prevState) => prevState + 1);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   return (
     <main>
       <div className="head-title">
@@ -77,74 +84,77 @@ const Categories = () => {
                 <th>Image</th>
                 <th>Name</th>
                 <th>Role</th>
-           
+
                 <th>Remove</th>
               </tr>
             </thead>
             <tbody>
-               {data.length === 0 ? (
-    <tr>
-      <td colSpan={6}>
-        <p>Users Not Found</p>
-      </td>
-    </tr>
-  ) : ( data.map((obj, index) => {
-                return (
-                  <tr>
-                    <td>{ index+1}  </td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <img
-                          src={`http://localhost:4000/uploads/${obj.image.replace(
-                            "\\",
-                            "/"
-                          )}`}
-                          alt=""
-                          style={{ width: "45px", height: "45px" }}
-                          className="rounded-circle"
-                        />
-                      </div>
-                    </td>
-                  
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <div className="ms-3">
-                          <p
-                            className="fw-bold mb-1"
-                            style={{ fontWeight: 700 }}
-                          >
-                            {obj.name}
-                          </p>
+              {data.length === 0 ? (
+                <tr>
+                  <td colSpan={6}>
+                    <p>Users Not Found</p>
+                  </td>
+                </tr>
+              ) : (
+                data.map((obj, index) => {
+                  return (
+                    <tr key={obj._id}>
+                      <td>{index + 1}  </td>
+                      <td>
+                        <div className="d-flex align-items-center">
+                          <img
+                            src={`${imageAPI}${obj.image}`}
+                            alt=""
+                            style={{ width: "45px", height: "45px" }}
+                            className="rounded-circle"
+                          />
                         </div>
-                      </div>
-                    </td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <div className="ms-3">
-                          <p className="fw-bold mb-1">{obj.role}</p>
-                        </div>
-                      </div>
-                    </td>
+                      </td>
 
-                    <td>
-                      <button
-                        style={{ border: "none", background: "transparent" }}
-                      >
-                        <a>
-                          <span className="status remove" onClick={()=>removeCategory(obj._id)}>Remove</span>
-                        </a>
-                      </button>
-                    </td>
-                  </tr>
-                );
-              }))}
+                      <td>
+                        <div className="d-flex align-items-center">
+                          <div className="ms-3">
+                            <p
+                              className="fw-bold mb-1"
+                              style={{ fontWeight: 700 }}
+                            >
+                              {obj.name}
+                            </p>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <div className="d-flex align-items-center">
+                          <div className="ms-3">
+                            <p className="fw-bold mb-1">{obj.role}</p>
+                          </div>
+                        </div>
+                      </td>
+
+                      <td>
+                        <button
+                          style={{ border: "none", background: "transparent" }}
+                        >
+                          <a>
+                            <span
+                              className="status remove"
+                              onClick={() => removeCategory(obj._id)}
+                            >
+                              Remove
+                            </span>
+                          </a>
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })
+              )}
             </tbody>
           </table>
         </div>
       </div>
     </main>
   );
-  }
+};
 
-
-export default Categories
+export default Categories;

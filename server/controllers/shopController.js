@@ -96,7 +96,7 @@ exports.Signup = async (req, res) => {
         html: `
           <p>Dear ${userName},</p>
           <p>You have requested to join our community. Please click the link below to verify your email:</p>
-          <a href="http://localhost:4000/shop/verify-email/${verificationToken}">Verify Email</a>
+          <a href="https://build-dream-server.onrender.com/shop/verify-email/${verificationToken}">Verify Email</a>
           <p>If you did not request to join our community, you can ignore this email.</p>
         `,
       };
@@ -201,7 +201,7 @@ exports.Login = async (req, res) => {
     const isMatch = await bcrypt.compare(password, shop[0].password);
 
     if (isMatch) {
-      const token = jwt.sign({ id: shop[0]._id }, process.env.JWT_KEY, {
+      const token = jwt.sign({ id: shop[0]._id,role:"shop" }, process.env.JWT_KEY, {
         expiresIn: "30d",
       });
       userLOGIN.status = true;

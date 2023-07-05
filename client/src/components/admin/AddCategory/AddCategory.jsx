@@ -1,62 +1,61 @@
-import React,{useState} from 'react'
-import './AddCategory.css'
-import Axios from 'axios';
-import { AdminAPI } from 'utils/api';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import "./AddCategory.css";
+import Axios from "axios";
+import { AdminAPI } from "utils/api";
+import { useNavigate } from "react-router-dom";
 
 const AddCategory = () => {
+  const navigate = useNavigate();
+  const [name, setName] = useState("");
+  const [role, setRole] = useState("PROFESSIONAL");
+  const [file, setFile] = useState(null);
+  const [fileError, setFileError] = useState("");
 
-const navigate = useNavigate()
-    const [name, setName] = useState('')
-    const [role, setRole] = useState('PROFESSIONAL')
-    const [file, setFile] = useState(null)
-      const [fileError, setFileError] = useState("");
-  
-    const handleImageUpload = (e) => {
-      const file = e.target.files[0];
-      const reader = new FileReader();
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
 
-      if (file) {
-        if (file.type === "image/jpeg" || file.type === "image/jpg") {
-          reader.onloadend = () => {
-            setFile(file);
-            setFileError("");
-          };
-          reader.readAsDataURL(file);
-        } else {
-          setFile(null);
-          setFileError("Please select a JPEG or JPG file.");
-        }
+    if (file) {
+      if (file.type === "image/jpeg" || file.type === "image/jpg") {
+        reader.onloadend = () => {
+          setFile(file);
+          setFileError("");
+        };
+        reader.readAsDataURL(file);
+      } else {
+        setFile(null);
+        setFileError("Please select a JPEG or JPG file.");
       }
-    };
-    
-    const submitHandler = (event) => {
-        event.preventDefault();
+    }
+  };
 
+  const submitHandler = (event) => {
+    event.preventDefault();
 
-      const formData = new FormData();
+    const formData = new FormData();
 
-      formData.append("category", name);
-      formData.append("role",role);
-      formData.append("image", file);
-
-      Axios.post(`${AdminAPI}addcategory`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-        withCredentials: true,
+    formData.append("category", name);
+    formData.append("role", role);
+    formData.append("image", file);
+  
+    const token = localStorage.getItem("token");
+    Axios.post(`${AdminAPI}addcategory`, formData, {
+      headers: { "Content-Type": "multipart/form-data" ,Authorization: `Bearer ${token}`},
+      withCredentials: true,
+    })
+      .then((response) => {
+        const result = response.data;
+        console.log(result);
+        if (result.status) {
+          navigate("/admin/categories");
+        } else {
+          alert(result.message);
+        }
       })
-        .then((response) => {
-          const result = response.data;
-          console.log(result);
-          if (result.status) {
-            navigate("/admin/categories");
-          } else {
-            alert(result.message);
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    };
+      .catch((error) => {
+        console.error(error);
+      });
+  };
   return (
     <main>
       <div className="head-title">
@@ -128,7 +127,11 @@ const navigate = useNavigate()
           </div>
           <div className="pl-[2.25rem]">
             <label htmlFor="phone" className="formbold-form-label">
-                {fileError && <p className="file-error" style={{color:"red"}}>{fileError}</p>}
+              {fileError && (
+                <p className="file-error" style={{ color: "red" }}>
+                  {fileError}
+                </p>
+              )}
               <i className="bx bx-image-add" /> Attach Image
             </label>
             <input
@@ -148,6 +151,6 @@ const navigate = useNavigate()
       </div>
     </main>
   );
-}
+};
 
-export default AddCategory
+export default AddCategory;

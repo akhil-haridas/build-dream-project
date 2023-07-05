@@ -1,11 +1,10 @@
-import React, { useState,useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import { useNavigate } from "react-router-dom";
 
 import { SHOPAPI } from "utils/api.js";
 
 import Axios from "axios";
-
 
 const ShopSignup = () => {
   const navigate = useNavigate();
@@ -18,7 +17,7 @@ const ShopSignup = () => {
   const [passwordError, setPasswordError] = useState("");
   const [selectedExpertise, setSelectedExpertise] = useState("");
   const [selectedType, setSelectedType] = useState("");
-const [data,setData] = useState([])
+  const [data, setData] = useState([]);
 
   const handleExpertiseChange = (event) => {
     setSelectedExpertise(event.target.value);
@@ -46,7 +45,11 @@ const [data,setData] = useState([])
   };
 
   useEffect(() => {
-    Axios.get(`${SHOPAPI}getcategories`, { withCredentials: true })
+    const token = localStorage.getItem("token");
+    Axios.get(`${SHOPAPI}getcategories`, {
+      withCredentials: true,
+      headers: { Authorization: `Bearer ${token}` },
+    })
       .then((response) => {
         setData(response.data.data);
       })
@@ -54,7 +57,6 @@ const [data,setData] = useState([])
         console.log(error);
       });
   }, []);
-
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -68,9 +70,12 @@ const [data,setData] = useState([])
     formData.append("role", "SHOP");
     formData.append("district", selectedType);
     formData.append("category", selectedExpertise);
-
+    const token = localStorage.getItem("token");
     Axios.post(`${SHOPAPI}signup`, formData, {
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
       withCredentials: true,
     })
       .then((response) => {
@@ -86,8 +91,6 @@ const [data,setData] = useState([])
         console.error(error);
       });
   };
-
-  
 
   return (
     <>

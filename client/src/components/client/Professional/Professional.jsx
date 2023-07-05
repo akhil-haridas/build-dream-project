@@ -9,19 +9,25 @@ const Professional = ({ data }) => {
   const user = useSelector((state) => state?.user?.userName);
 
   const navigate = useNavigate();
-  const connectPro = (id, type) => {
-    const userId = id;
-    const userType = type;
-    Axios.post(
-      `${USERAPI}chat`,
-      { userId, userType },
-      { withCredentials: true }
-    ).then((response) => {
-      const chatId = response.data._id;
-      localStorage.setItem("selectedChatID", chatId);
-      navigate("/chat");
-    });
-  };
+const connectPro = (id, type) => {
+  const userId = id;
+  const userType = type;
+  const token = localStorage.getItem("token");
+
+  Axios.post(
+    `${USERAPI}chat`,
+    { userId, userType },
+    {
+      withCredentials: true,
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  ).then((response) => {
+    const chatId = response.data._id;
+    localStorage.setItem("selectedChatID", chatId);
+    navigate("/chat");
+  });
+};
+
   return (
     <div className="theme-red">
       <div className="vg-page page-about sm:pb-[20px]" id="about">

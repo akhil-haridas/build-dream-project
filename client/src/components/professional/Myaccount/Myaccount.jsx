@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Myaccount.css";
 import { Helmet } from "react-helmet";
-import { PROFESSIONALAPI } from "utils/api";
+import { PROFESSIONALAPI, imageAPI } from "utils/api";
 import Axios from "axios";
 const Myaccount = () => {
   const [data, setData] = useState([]);
@@ -17,13 +17,12 @@ const Myaccount = () => {
   const [current, setCurrent] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-    const [passwordError, setPasswordError] = useState("");
-    const [fb, setFb] = useState("")
-    const [twitter, setTwitter] = useState("")
-    const [link, setLink] = useState("")
-    const [insta,setInsta] = useState("")
-    
-    
+  const [passwordError, setPasswordError] = useState("");
+  const [fb, setFb] = useState("");
+  const [twitter, setTwitter] = useState("");
+  const [link, setLink] = useState("");
+  const [insta, setInsta] = useState("");
+
   const handleImageSelect = (event) => {
     setShow(false);
     const file = event.target.files[0];
@@ -36,7 +35,11 @@ const Myaccount = () => {
   };
 
   useEffect(() => {
-    Axios.get(`${PROFESSIONALAPI}getdetails`, { withCredentials: true })
+    const token = localStorage.getItem("token");
+    Axios.get(`${PROFESSIONALAPI}getdetails`, {
+      withCredentials: true,
+      headers: { Authorization: `Bearer ${token}` },
+    })
       .then((response) => {
         setData(response.data.data);
         setExpertType(response.data.data.employmentType);
@@ -56,9 +59,13 @@ const Myaccount = () => {
     formData.append("name", name);
     formData.append("image", file);
     formData.append("expertType", expertType);
+    const token = localStorage.getItem("token");
 
     Axios.post(`${PROFESSIONALAPI}generaledit`, formData, {
-      headers: { "Content-Type": "multipart/form-data" },
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
       withCredentials: true,
     })
       .then((response) => {
@@ -70,36 +77,39 @@ const Myaccount = () => {
       });
   };
 
-const handlePasswordMatch = () => {
-  if (confirmPassword !== "" && password !== confirmPassword) {
-    setPasswordError("Passwords don't match");
-  } else {
-    setPasswordError("");
-  }
-};
-    const socialHandler = (event) => {
-      event.preventDefault();
+  const handlePasswordMatch = () => {
+    if (confirmPassword !== "" && password !== confirmPassword) {
+      setPasswordError("Passwords don't match");
+    } else {
+      setPasswordError("");
+    }
+  };
+  const socialHandler = (event) => {
+    event.preventDefault();
 
-      const formData = new FormData();
+    const formData = new FormData();
 
-      formData.append("fb", fb);
-      formData.append("twitter", twitter);
-      formData.append("link", link);
-      formData.append("insta", insta);
+    formData.append("fb", fb);
+    formData.append("twitter", twitter);
+    formData.append("link", link);
+    formData.append("insta", insta);
+    const token = localStorage.getItem("token");
 
-      Axios.post(`${PROFESSIONALAPI}socialedit`, formData, {
-        headers: { "Content-Type": "application/json" },
-        withCredentials: true,
+    Axios.post(`${PROFESSIONALAPI}socialedit`, formData, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      withCredentials: true,
+    })
+      .then((response) => {
+        const result = response.data.user;
+        setData(result);
       })
-        .then((response) => {
-          const result = response.data.user;
-          setData(result);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    };
-
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   const infoHandler = (event) => {
     event.preventDefault();
@@ -110,9 +120,13 @@ const handlePasswordMatch = () => {
     formData.append("location", location);
     formData.append("district", district);
     formData.append("mobile", mobile);
+    const token = localStorage.getItem("token");
 
     Axios.post(`${PROFESSIONALAPI}infoedit`, formData, {
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
       withCredentials: true,
     })
       .then((response) => {
@@ -122,35 +136,39 @@ const handlePasswordMatch = () => {
       .catch((error) => {
         console.error(error);
       });
-    };
-    
-      const passwordHandler = (event) => {
-        event.preventDefault();
+  };
 
-        const formData = new FormData();
+  const passwordHandler = (event) => {
+    event.preventDefault();
 
-        formData.append("current", current);
-        formData.append("password", password);
+    const formData = new FormData();
 
-        Axios.post(`${PROFESSIONALAPI}changepass`, formData, {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        })
-          .then((response) => {
-              if (response.data.status) {
-                  window.location.reload()
-               alert('password changed')
-              } else {
-                   alert("wrong old password ");
-           }
-          })
-          .catch((error) => {
-            console.error(error);
-          });
-      };
+    formData.append("current", current);
+    formData.append("password", password);
+    const token = localStorage.getItem("token");
+
+    Axios.post(`${PROFESSIONALAPI}changepass`, formData, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      withCredentials: true,
+    })
+      .then((response) => {
+        if (response.data.status) {
+          window.location.reload();
+          alert("password changed");
+        } else {
+          alert("wrong old password ");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   return (
-       <main>
+    <main>
       <div className="head-title">
         <div className="left">
           <h1>My Account</h1>
@@ -219,10 +237,7 @@ const handlePasswordMatch = () => {
                       <img
                         src={
                           data.image
-                            ? `http://localhost:4000/uploads/${data.image.replace(
-                                "\\",
-                                "/"
-                              )}`
+                            ? `${imageAPI}${data.image}`
                             : "/images/ImageUpload.png"
                         }
                         alt=""

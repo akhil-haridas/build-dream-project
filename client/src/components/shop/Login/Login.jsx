@@ -33,7 +33,7 @@ const LoginPage = () => {
   const [showQuote, setShowQuote] = useState(true);
 
   const [cookie, setCookie, removeCookie] = useCookies(["jwt"]);
-  
+
   const handleModalClose = () => {
     setShowModal(false);
     setShowQuote(true);
@@ -46,22 +46,25 @@ const LoginPage = () => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-
+    const token = localStorage.getItem("token");
     Axios.post(
       `${SHOPAPI}login`,
       { email, password },
-      { withCredentials: true }
+      {
+        withCredentials: true,
+        headers: { Authorization: `Bearer ${token}` },
+      }
     ).then((response) => {
       const result = response.data.userLOGIN;
       if (result.status) {
-        console.log(result,'resss');
+        console.log(result, "resss");
         if (result.plan) {
           dispatch(
             shopActions.shopAddDetails({
               name: result.name,
               token: result.token,
               role: result.role,
-              id:result.id
+              id: result.id,
             })
           );
           navigate("/shop");
@@ -70,7 +73,7 @@ const LoginPage = () => {
           dispatch(shopActions.shopLogout());
 
           navigate(`/shop/subscription/${result.id}`);
-       }
+        }
       } else {
         setErrmessage(result.message);
       }
@@ -109,10 +112,14 @@ const LoginPage = () => {
   };
 
   const handleForgotPassword = () => {
+    const token = localStorage.getItem("token");
     Axios.post(
       `${SHOPAPI}resetpass`,
       { newpass, mobile },
-      { withCredentials: true }
+      {
+        withCredentials: true,
+        headers: { Authorization: `Bearer ${token}` },
+      }
     ).then((response) => {
       const result = response.data.userRESET;
       if (result.status) {

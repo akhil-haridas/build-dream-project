@@ -1,7 +1,7 @@
-import Axios from 'axios';
-import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
-import { AdminAPI } from 'utils/api';
+import Axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { AdminAPI, imageAPI } from "utils/api";
 
 const Shops = () => {
   const navigate = useNavigate();
@@ -13,7 +13,11 @@ const Shops = () => {
   };
 
   useEffect(() => {
-    Axios.get(`${AdminAPI}getshops`, { withCredentials: true })
+    const token = localStorage.getItem("token");
+    Axios.get(`${AdminAPI}getshops`, {
+      withCredentials: true,
+      headers: { Authorization: `Bearer ${token}` },
+    })
       .then((response) => {
         setData(response.data.data);
       })
@@ -23,8 +27,11 @@ const Shops = () => {
   }, [allow]);
 
   const blockUser = (id) => {
-    console.log(id);
-    Axios.get(`${AdminAPI}blockshop/${id}`, { withCredentials: true })
+    const token = localStorage.getItem("token");
+    Axios.get(`${AdminAPI}blockshop/${id}`, {
+      withCredentials: true,
+      headers: { Authorization: `Bearer ${token}` },
+    })
       .then((response) => {
         setAllow((prevState) => prevState + 1);
       })
@@ -93,7 +100,7 @@ const Shops = () => {
               ) : (
                 data.map((obj, index) => {
                   return (
-                    <tr>
+                    <tr key={obj._id}>
                       <td>
                         <p style={{ marginTop: "21px", fontWeight: 600 }}>
                           {index + 1}
@@ -103,10 +110,7 @@ const Shops = () => {
                         <div className="d-flex align-items-center">
                           {obj.image ? (
                             <img
-                              src={`http://localhost:4000/uploads/${obj.image.replace(
-                                "\\",
-                                "/"
-                              )}`}
+                              src={`${imageAPI}${obj.image}`}
                               alt=""
                               style={{ width: "45px", height: "45px" }}
                               className="rounded-circle"
@@ -178,6 +182,6 @@ const Shops = () => {
       </div>
     </main>
   );
-}
+};
 
-export default Shops
+export default Shops;
