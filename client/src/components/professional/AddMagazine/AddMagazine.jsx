@@ -54,10 +54,9 @@ const AddMagazine = () => {
           alert("Magazine Added SuccessFully");
           navigate("/professional/magazines");
         }
-
-        console.log(response.data);
       })
       .catch((error) => {
+         navigate("/server-error");
         console.log(error);
       });
   };

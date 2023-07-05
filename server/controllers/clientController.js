@@ -378,6 +378,7 @@ exports.getAvatar = async (req, res) => {
 };
 
 exports.getChat = asyncHandler(async (req, res) => {
+  console.log(GETCHAT)
   const { userId, userType } = req.body;
 
   const jwtToken = jwt.verify(req.cookies.jwt.token, "secretCode");
@@ -432,12 +433,14 @@ exports.getChat = asyncHandler(async (req, res) => {
       res.status(200).json(FullChat);
     }
   } catch (error) {
+      console.log(error.message);
     res.status(500).json({ message: "Server Error" });
   }
 });
 
 exports.accessChat = asyncHandler(async (req, res) => {
   try {
+    console.log(ACCESSCHAT);
     const jwtToken = jwt.verify(req.cookies.jwt.token, "secretCode");
     const userID = jwtToken.id;
     const userType = "User";
@@ -466,11 +469,13 @@ exports.accessChat = asyncHandler(async (req, res) => {
 
     res.status(200).send(results);
   } catch (error) {
+    console.log(error.message)
     res.status(500).json({ message: "Server Error" });
   }
 });
 
 exports.sendMessage = asyncHandler(async (req, res) => {
+  console.log("SENT MESSAGE")
   const { content, chatId } = req.body;
   const jwtToken = jwt.verify(req.cookies.jwt.token, "secretCode");
   const userID = jwtToken.id;
@@ -514,11 +519,13 @@ exports.sendMessage = asyncHandler(async (req, res) => {
     await Chat.findByIdAndUpdate(chatId, { latestMessage: message });
     res.json(message);
   } catch (error) {
+      console.log(error.message);
     res.status(500).json({ message: "Server Error" });
   }
 });
 
 exports.allMessages = asyncHandler(async (req, res) => {
+  console.log("ALL MESSAGE")
   try {
     const chatId = req.query.id;
     const messages = await Message.find({ chat: chatId })
@@ -529,6 +536,7 @@ exports.allMessages = asyncHandler(async (req, res) => {
       .populate("chat");
     res.json(messages);
   } catch (error) {
+      console.log(error.message);
     res.status(500).json({ message: "Server Error" });
   }
 });

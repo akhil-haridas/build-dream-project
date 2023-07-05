@@ -28,6 +28,7 @@ const Work = () => {
         setImagePreview(`${imageAPI}${work.image}`);
       })
       .catch((error) => {
+         navigate("/server-error");
         console.log(error);
       });
   }, [id]);
@@ -57,7 +58,6 @@ const Work = () => {
     })
       .then((response) => {
         const result = response.data;
-        console.log(result);
         if (result.status) {
           alert("Updated successfully");
           navigate("/professional/works");
@@ -76,7 +76,6 @@ const Work = () => {
       })
         .then((response) => {
           const result = response.data;
-          console.log(result);
           if (result.status) {
             alert("Deleted successfully");
             navigate("/professional/works");

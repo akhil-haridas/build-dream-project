@@ -4,12 +4,14 @@ import Axios from "axios";
 import { SHOPAPI, imageAPI } from "utils/api";
 import { useSelector } from "react-redux";
 import io from "socket.io-client";
+import { useNavigate } from "react-router-dom";
 
 const ENDPOINT = "https://build-dream-server.onrender.com";
 
 var socket, selectedChatCompare;
 
 const Chat = () => {
+  const navigate = useNavigate()
   const userID = useSelector((state) => state.shop.shopID);
   const [chats, setChats] = useState([]);
   const [selectedChat, setSelectedChat] = useState(null);
@@ -37,16 +39,15 @@ const Chat = () => {
     })
       .then((response) => {
         setChats(response.data);
-        console.log(response.data, "response.data");
       })
       .catch((error) => {
+         navigate("/server-error");
         console.log(error);
       });
   }, []);
 
   const handleChatSelect = (chat) => {
     setSelectedChat(chat);
-    console.log(chat);
   };
 
   useEffect(() => {
@@ -73,6 +74,7 @@ const Chat = () => {
 
       selectedChatCompare = selectedChat;
     } catch (error) {
+       navigate("/server-error");
       console.log(error);
     }
   };
@@ -135,6 +137,7 @@ const Chat = () => {
         setMessages([...messages, newSentMessage]);
         setNewMessage("");
       } catch (error) {
+         navigate("/server-error");
         console.log(error);
       }
     }
@@ -149,7 +152,6 @@ const Chat = () => {
   };
 
   const getSender = (users) => {
-    console.log(users);
     return users[0].refType !== "User" ? users[1].refId : users[0].refId;
   };
 

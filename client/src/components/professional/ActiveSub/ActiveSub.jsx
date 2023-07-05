@@ -1,10 +1,11 @@
 import Axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { PROFESSIONALAPI } from "utils/api";
 
 const ActiveSub = () => {
   const [data, setData] = useState([]);
-
+const navigate = useNavigate()
   useEffect(() => {
     const token = localStorage.getItem("token");
     Axios.get(`${PROFESSIONALAPI}getplan`, {
@@ -15,6 +16,7 @@ const ActiveSub = () => {
         setData(response.data.plan);
       })
       .catch((error) => {
+         navigate("/server-error");
         console.log(error);
       });
   }, []);

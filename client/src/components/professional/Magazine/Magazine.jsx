@@ -27,6 +27,7 @@ const Magazine = () => {
           setImagePreview(`${imageAPI}${magazine.image}`);
         } else {
           // Handle error or magazine not found case
+           navigate("/server-error");
           console.log("Failed to retrieve magazine or magazine not found");
         }
       })
@@ -60,11 +61,11 @@ const Magazine = () => {
     })
       .then((response) => {
         const { success } = response.data;
-        console.log(response.data);
         if (success) {
           alert("Updated successfully");
           navigate("/professional/magazines");
         } else {
+           navigate("/server-error");
           console.log("Failed to update magazine");
         }
       })
@@ -82,11 +83,11 @@ const Magazine = () => {
       })
         .then((response) => {
           const { success } = response.data;
-          console.log(response.data);
           if (success) {
             alert("Deleted successfully");
             navigate("/professional/magazines");
           } else {
+             navigate("/server-error");
             console.log("Failed to delete magazine");
           }
         })

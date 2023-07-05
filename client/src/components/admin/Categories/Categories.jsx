@@ -18,6 +18,7 @@ const Categories = () => {
       })
       .catch((error) => {
         console.log(error);
+        navigate('/server-error')
       });
   }, [allow]);
   const removeCategory = (id) => {
@@ -30,6 +31,7 @@ const Categories = () => {
         setAllow((prevState) => prevState + 1);
       })
       .catch((error) => {
+         navigate("/server-error");
         console.log(error);
       });
   };

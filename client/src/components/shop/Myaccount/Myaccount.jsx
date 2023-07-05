@@ -49,6 +49,7 @@ const Myaccount = () => {
         if (response.data.data.image) setShow(true);
       })
       .catch((error) => {
+         navigate("/server-error");
         console.log(error);
       });
   }, []);

@@ -23,6 +23,7 @@ const Professionals = () => {
       })
       .catch((error) => {
         console.log(error);
+         navigate("/server-error");
       });
   }, [allow]);
 
@@ -37,6 +38,7 @@ const Professionals = () => {
       })
       .catch((error) => {
         console.log(error);
+         navigate("/server-error");
       });
   };
   return (

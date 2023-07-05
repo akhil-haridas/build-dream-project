@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { PROFESSIONALAPI, imageAPI } from "utils/api";
 import Axios from "axios";
 const Works = ({ data, updateData }) => {
-  console.log(data, "WORKS PAGE");
   const navigate = useNavigate();
   const [displayCount, setDisplayCount] = useState(6);
 
@@ -24,7 +23,6 @@ const Works = ({ data, updateData }) => {
       })
         .then((response) => {
           const result = response.data;
-          console.log(result);
           if (result.status) {
             alert("Deleted successfully");
             updateData(id); // Pass the `id` directly

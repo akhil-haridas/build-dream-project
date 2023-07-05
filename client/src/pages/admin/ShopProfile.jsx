@@ -17,7 +17,6 @@ const ShopProfile = () => {
     })
       .then((response) => {
         setData(response.data.DATA);
-        console.log(response.data.DATA);
       })
       .catch((error) => {
         console.log(error);

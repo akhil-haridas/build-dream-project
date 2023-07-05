@@ -53,10 +53,9 @@ const Addwork = () => {
           alert("Work Added SuccessFully");
           navigate("/professional/works");
         }
-
-        console.log(response.data);
       })
       .catch((error) => {
+         navigate("/server-error");
         console.log(error);
       });
   };

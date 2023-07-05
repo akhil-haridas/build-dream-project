@@ -15,11 +15,12 @@ const Magazine = ({ data }) => {
       })
         .then((response) => {
           const { success } = response.data;
-          console.log(response.data);
+
           if (success) {
             alert("Deleted successfully");
             navigate("/professional/magazines");
           } else {
+             navigate("/server-error");
             console.log("Failed to delete magazine");
           }
         })

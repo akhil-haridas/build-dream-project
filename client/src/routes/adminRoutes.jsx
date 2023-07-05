@@ -34,7 +34,6 @@ const AdminRoutes = () => {
   }, []);
 
   const user = useSelector((state) => state?.admin?.adminToken);
-  console.log(user, "hey");
   return (
     <Routes>
       <Route

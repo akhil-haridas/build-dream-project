@@ -23,7 +23,6 @@ const DetailProfile = () => {
     })
       .then((response) => {
         setData(response.data.DATA);
-        console.log(response.data.DATA);
       })
       .catch((error) => {
         navigate("/server-error");

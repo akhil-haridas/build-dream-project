@@ -24,7 +24,6 @@ const ShopRoutes = () => {
 
   useEffect(() => {
     if (Object.keys(cookies).length > 0) {
-      console.log(cookies,'cook')
       dispatch(
         shopActions.shopAddDetails({
           name: cookies.jwt.name,

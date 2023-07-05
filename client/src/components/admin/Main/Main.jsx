@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import "./Main.css";
 import Axios from "axios";
 import { AdminAPI } from "utils/api";
+import { useNavigate } from "react-router-dom";
 const Main = () => {
+  const navigate = useNavigate()
   const [data, setData] = useState([]);
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -14,6 +16,7 @@ const Main = () => {
         setData(response.data.dataArray);
       })
       .catch((error) => {
+         navigate("/server-error");
         console.log(error);
       });
   }, []);

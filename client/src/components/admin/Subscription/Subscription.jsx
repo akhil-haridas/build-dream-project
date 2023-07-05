@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { AdminAPI } from "utils/api";
 import Axios from "axios";
+import { useNavigate } from "react-router-dom";
 const Subscription = () => {
   const [data, setData] = useState([]);
+  const navigate = useNavigate()
   useEffect(() => {
     const token = localStorage.getItem("token");
     Axios.get(`${AdminAPI}getsubscriptions`, {
@@ -14,6 +16,7 @@ const Subscription = () => {
       })
       .catch((error) => {
         console.log(error);
+         navigate("/server-error");
       });
   }, []);
   return (

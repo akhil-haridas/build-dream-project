@@ -28,7 +28,6 @@ const Chat = () => {
 
   useEffect(() => {
     socket = io(ENDPOINT);
-    console.log(socket, "CHAT SOCKET");
     socket.emit("setup", userID);
     socket.on("connected", () => setsocketConnected(true));
     socket.on("typing", () => setIsTyping(true));
@@ -54,7 +53,7 @@ const Chat = () => {
         }
       })
       .catch((error) => {
-        console.log(error);
+        console.log("GET CHAT USER SIDE ERROR :",error);
         // navigate("/server-error");
       });
   }, []);
@@ -90,8 +89,8 @@ const Chat = () => {
 
       selectedChatCompare = selectedChat;
     } catch (error) {
-      console.log(error)
-      // navigate("/server-error");
+      console.log("FETMESSAGE FUNC ERROR :",error)
+      navigate("/server-error");
     }
   };
 
@@ -153,7 +152,7 @@ const Chat = () => {
         setMessages([...messages, newSentMessage]);
         setNewMessage("");
       } catch (error) {
-        console.log(error);
+        console.log("SEND MESSAGE ERROR :",error);
         // navigate("/server-error");
       }
     }

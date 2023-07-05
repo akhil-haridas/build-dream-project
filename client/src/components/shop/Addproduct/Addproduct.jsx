@@ -49,11 +49,10 @@ const Addproduct = () => {
           alert("Product added Successfully");
           navigate("/shop/products");
         }
-
-        console.log(response.data);
       })
       .catch((error) => {
         // Handle error
+         navigate("/server-error");
         console.log(error);
       });
   };

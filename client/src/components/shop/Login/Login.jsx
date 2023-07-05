@@ -57,7 +57,6 @@ const LoginPage = () => {
     ).then((response) => {
       const result = response.data.userLOGIN;
       if (result.status) {
-        console.log(result, "resss");
         if (result.plan) {
           dispatch(
             shopActions.shopAddDetails({
@@ -85,7 +84,6 @@ const LoginPage = () => {
     if (mobile === "" || mobile.length < 10) return;
     const number = "+91" + mobile;
     let verify = new firebase.auth.RecaptchaVerifier("recaptcha-container");
-    console.log("verify");
     auth
       .signInWithPhoneNumber(number, verify)
       .then((result) => {

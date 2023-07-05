@@ -45,7 +45,7 @@ const AddCategory = () => {
     })
       .then((response) => {
         const result = response.data;
-        console.log(result);
+     
         if (result.status) {
           navigate("/admin/categories");
         } else {

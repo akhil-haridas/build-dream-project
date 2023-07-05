@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 
 import Sidebar from "components/admin/Sidebar/Sidebar";
 import Navbar from "components/admin/Navbar/Navbar";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { AdminAPI } from "utils/api";
 import Axios from "axios";
 import ClientProfilePage from "components/admin/ClientProfile/ClientProfile";
 
 const ClinetProfile = () => {
+  const navigate = useNavigate()
   const { id } = useParams();
   const [data, setData] = useState([]);
 
@@ -19,9 +20,9 @@ const ClinetProfile = () => {
     })
       .then((response) => {
         setData(response.data.DATA);
-        console.log(response.data.DATA);
       })
       .catch((error) => {
+         navigate("/server-error");
         console.log(error);
       });
   }, []);

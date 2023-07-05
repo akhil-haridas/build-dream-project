@@ -67,6 +67,7 @@ const Login = () => {
         }
       })
       .catch((err) => {
+         navigate("/server-error");
         console.log(err.message, "ERROR");
       });
   };

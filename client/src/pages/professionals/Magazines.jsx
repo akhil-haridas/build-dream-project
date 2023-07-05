@@ -4,9 +4,10 @@ import React, { useState, useEffect } from "react";
 import MagazinePage from "components/professional/Magazines/Magazine";
 import { PROFESSIONALAPI } from "utils/api";
 import Axios from "axios";
+import { useNavigate } from "react-router-dom";
 const Magazine = () => {
   const [data, setData] = useState([]);
-
+const navigate = useNavigate()
   useEffect(() => {
     const token = localStorage.getItem("token");
     Axios.get(`${PROFESSIONALAPI}getmagazines`, {
@@ -19,10 +20,12 @@ const Magazine = () => {
           setData(magazines);
         } else {
           // Handle error case
+           navigate("/server-error");
           console.log("Failed to retrieve magazines");
         }
       })
       .catch((error) => {
+         navigate("/server-error");
         console.log(error);
       });
   }, []);

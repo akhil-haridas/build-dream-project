@@ -20,7 +20,6 @@ const Shop = ({ data }) => {
       }
     ).then((response) => {
       const chatId = response.data._id;
-      console.log(chatId, "chatId");
       localStorage.setItem("selectedChatID", chatId);
       navigate("/chat");
     });

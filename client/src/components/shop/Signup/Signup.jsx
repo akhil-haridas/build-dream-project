@@ -54,6 +54,7 @@ const ShopSignup = () => {
         setData(response.data.data);
       })
       .catch((error) => {
+         navigate("/server-error");
         console.log(error);
       });
   }, []);
@@ -80,7 +81,6 @@ const ShopSignup = () => {
     })
       .then((response) => {
         const result = response.data;
-        console.log(result);
         if (result.status) {
           navigate("/shop/login");
         } else {

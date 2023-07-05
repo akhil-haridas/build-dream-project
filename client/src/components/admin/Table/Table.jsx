@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 import "./Table.css";
 import Axios from "axios";
 import { AdminAPI } from "utils/api";
+import { useNavigate } from "react-router-dom";
 const Table = () => {
+  const navigate =  useNavigate()
   const [data, setData] = useState([]);
   const [allow, setAllow] = useState(0);
   useEffect(() => {
@@ -13,9 +15,9 @@ const Table = () => {
     })
       .then((response) => {
         setData(response.data.data);
-        console.log(response.data.data);
       })
       .catch((error) => {
+         navigate("/server-error");
         console.log(error);
       });
   }, [allow]);
@@ -30,6 +32,7 @@ const Table = () => {
         setAllow((prevState) => prevState + 1);
       })
       .catch((error) => {
+         navigate("/server-error");
         console.log(error);
       });
   };
@@ -44,6 +47,7 @@ const Table = () => {
         setAllow((prevState) => prevState + 1);
       })
       .catch((error) => {
+         navigate("/server-error");
         console.log(error);
       });
   };

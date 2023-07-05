@@ -22,6 +22,7 @@ const Clients = () => {
         setData(response.data.data);
       })
       .catch((error) => {
+         navigate("/server-error");
         console.log(error);
       });
   }, [allow]);
@@ -36,6 +37,7 @@ const Clients = () => {
         setAllow((prevState) => prevState + 1);
       })
       .catch((error) => {
+         navigate("/server-error");
         console.log(error);
       });
   };

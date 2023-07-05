@@ -4,12 +4,14 @@ import Axios from "axios";
 import { PROFESSIONALAPI, imageAPI } from "utils/api";
 import { useSelector } from "react-redux";
 import io from "socket.io-client";
+import { useNavigate } from "react-router-dom";
 
 const ENDPOINT = "https://build-dream-server.onrender.com";
 
 var socket, selectedChatCompare;
 
 const Chat = () => {
+  const navigate = useNavigate()
   const userID = useSelector((state) => state.professional.professionalID);
   const [chats, setChats] = useState([]);
   const [selectedChat, setSelectedChat] = useState(null);
@@ -39,6 +41,7 @@ const Chat = () => {
         setChats(response.data);
       })
       .catch((error) => {
+         navigate("/server-error");
         console.log(error);
       });
   }, []);
@@ -69,6 +72,7 @@ const Chat = () => {
 
       selectedChatCompare = selectedChat;
     } catch (error) {
+       navigate("/server-error");
       console.log(error);
     }
   };
@@ -131,6 +135,7 @@ const Chat = () => {
         setMessages([...messages, newSentMessage]);
         setNewMessage("");
       } catch (error) {
+         navigate("/server-error");
         console.log(error);
       }
     }

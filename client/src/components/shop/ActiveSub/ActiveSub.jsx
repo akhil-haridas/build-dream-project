@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { SHOPAPI } from "utils/api";
 import Axios from "axios";
+import { useNavigate } from "react-router-dom";
 const ActiveSub = () => {
   const [data, setData] = useState([]);
-
+const navigate =  useNavigate()
   useEffect(() => {
     const token = localStorage.getItem("token");
     Axios.get(`${SHOPAPI}getplan`, {
@@ -14,6 +15,7 @@ const ActiveSub = () => {
         setData(response.data.plan);
       })
       .catch((error) => {
+         navigate("/server-error");
         console.log(error);
       });
   }, []);

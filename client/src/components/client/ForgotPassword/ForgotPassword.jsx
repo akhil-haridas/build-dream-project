@@ -77,7 +77,6 @@ const ForgotPassword = () => {
     if (mobile === "" || mobile.length < 10) return;
     const number = "+91" + mobile;
     let verify = new firebase.auth.RecaptchaVerifier("recaptcha-container");
-    console.log(verify);
     auth
       .signInWithPhoneNumber(number, verify)
       .then((result) => {

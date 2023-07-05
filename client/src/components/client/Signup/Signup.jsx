@@ -104,7 +104,6 @@ const SignupPage = () => {
     )
       .then((response) => {
         const result = response.data;
-        console.log(result);
         if (result.status) {
           setfinal(result.otp);
           setshow(true);
@@ -152,7 +151,6 @@ const SignupPage = () => {
     })
       .then((response) => {
         const result = response.data;
-        console.log(result);
         if (result.status) {
           navigate("/login");
         } else {

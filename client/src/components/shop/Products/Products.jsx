@@ -19,7 +19,6 @@ const Products = ({ data }) => {
       })
         .then((response) => {
           const result = response.data;
-          console.log(result);
           if (result.status) {
             alert("Deleted successfully");
             navigate("/shop/products");

@@ -28,6 +28,7 @@ const Product = () => {
         setImagePreview(`${imageAPI}${product.image}`);
       })
       .catch((error) => {
+         navigate("/server-error");
         console.log(error);
       });
   }, [id]);
@@ -75,7 +76,6 @@ const Product = () => {
       })
         .then((response) => {
           const result = response.data;
-          console.log(result);
           if (result.status) {
             alert("Deleted successfully");
             navigate("/shop/products");

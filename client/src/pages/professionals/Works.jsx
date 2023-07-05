@@ -4,9 +4,10 @@ import WorksPage from "components/professional/Works/Works";
 import Navbar from "components/professional/Navbar/Navbar";
 import { PROFESSIONALAPI } from "utils/api";
 import Sidebar from "components/professional/Sidebar/Sidebar";
+import { useNavigate } from "react-router-dom";
 const Works = () => {
   const [data, setData] = useState([]);
-
+const navigate = useNavigate()
   useEffect(() => {
     const token = localStorage.getItem("token");
     Axios.get(`${PROFESSIONALAPI}getdetails`, {
@@ -17,6 +18,7 @@ const Works = () => {
         setData(response.data.data.works);
       })
       .catch((error) => {
+         navigate("/server-error");
         console.log(error);
       });
   }, []);

@@ -28,15 +28,12 @@ const Subscription = () => {
           headers: { Authorization: `Bearer ${tokens}` },
         }
       );
-
-      console.log(response, "response");
       if (response.status === 200) {
         // if (response.data.requiresAction) {
 
         //   window.open(response.data.stripeSdkUrl, "_blank");
         // } else {
-        console.log("Payment succeeded!");
-        console.log(response.data.message);
+
         alert("Payment succeeded!");
         navigate("/professional");
         // }

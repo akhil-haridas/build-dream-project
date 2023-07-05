@@ -3,6 +3,7 @@ import "./Myaccount.css";
 import { Helmet } from "react-helmet";
 import { PROFESSIONALAPI, imageAPI } from "utils/api";
 import Axios from "axios";
+import { useNavigate } from "react-router-dom";
 const Myaccount = () => {
   const [data, setData] = useState([]);
   const [name, setName] = useState("");
@@ -23,6 +24,7 @@ const Myaccount = () => {
   const [link, setLink] = useState("");
   const [insta, setInsta] = useState("");
 
+  const navigate = useNavigate()
   const handleImageSelect = (event) => {
     setShow(false);
     const file = event.target.files[0];
@@ -46,6 +48,7 @@ const Myaccount = () => {
         if (response.data.data.image) setShow(true);
       })
       .catch((error) => {
+         navigate("/server-error");
         console.log(error);
       });
   }, []);
@@ -54,7 +57,6 @@ const Myaccount = () => {
     event.preventDefault();
 
     const formData = new FormData();
-    console.log(name, expertType, "test");
 
     formData.append("name", name);
     formData.append("image", file);

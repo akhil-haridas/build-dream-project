@@ -28,7 +28,7 @@ const Subscription = () => {
         }
       );
 
-      console.log(response, "response");
+
       if (response.status === 200) {
         // if (response.data.requiresAction) {
 

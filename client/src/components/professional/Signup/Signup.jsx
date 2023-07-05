@@ -46,6 +46,7 @@ const ProfessionalSignup = () => {
         setData(response.data.data);
       })
       .catch((error) => {
+         navigate("/server-error");
         console.log(error);
       });
   }, []);
@@ -78,7 +79,6 @@ const ProfessionalSignup = () => {
     })
       .then((response) => {
         const result = response.data;
-        console.log(result);
         if (result.status) {
           navigate("/professional/login");
         } else {
