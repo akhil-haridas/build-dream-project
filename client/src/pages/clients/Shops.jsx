@@ -32,7 +32,9 @@ const Shops = () => {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((response) => {
-        setCategory(response.data.data);
+       
+          setCategory(response.data.data);
+     
       })
       .catch((error) => {
         navigate("/server-error");
@@ -88,6 +90,13 @@ const Shops = () => {
       filteredData = filteredData.filter(
         (professional) => professional.category === categoryFilter.value
       );
+
+       const shopf = localStorage.getItem("shopf");
+       if (shopf) {
+         const filteredData = filteredData.filter(
+           (professional) => professional.category === shopf
+         );
+       } 
     }
 
     if (searchQuery) {

@@ -1,14 +1,25 @@
 import React,{useState} from "react";
+import { useNavigate } from "react-router-dom";
 import { imageAPI } from "utils/api";
 const Category = (props) => {
     const [displayCount, setDisplayCount] = useState(4);
-
+const navigate = useNavigate()
     const handleLoadMore = () => {
       setDisplayCount(displayCount + 4);
     };
 
     const remainingItems = props.data.length - displayCount;
     const showLoadMoreButton = remainingItems > 0;
+
+const filter = (data) => {
+  if (data.role === "PROFESSIONAL") {
+    localStorage.setItem("prof", data.name);
+    navigate('/shops')
+  } else if (data.role === "SHOP") {
+    localStorage.setItem("shopf", data.name);
+    navigate("/professionals");
+  }
+};
 
   return (
     <>
@@ -22,6 +33,7 @@ const Category = (props) => {
           <div
             key={data._id}
             className="category border border-black_900_1f border-solid flex flex-1 flex-col gap-[15px] items-center justify-start p-1.5 rounded-[16px] w-full"
+            onClick={()=>filter(data)}
           >
             <img
               src={`${imageAPI}${data.image}`}

@@ -90,6 +90,13 @@ const Professionals = () => {
       filteredData = filteredData.filter(
         (professional) => professional.expertise === categoryFilter.value
       );
+
+       const prof = localStorage.getItem("prof");
+       if (prof) {
+         const filteredData = filteredData.filter(
+           (professional) => professional.category === prof
+         );
+       } 
     }
 
     if (searchQuery) {
