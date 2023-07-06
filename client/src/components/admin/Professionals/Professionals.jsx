@@ -112,7 +112,6 @@ const Professionals = () => {
                         <div className="d-flex align-items-center">
                           {obj.image ? (
                             <img
-                            
                               src={`${imageAPI}${obj.image}`}
                               alt=""
                               style={{ width: "45px", height: "45px" }}
@@ -146,7 +145,7 @@ const Professionals = () => {
                           {obj.createdAt.slice(0, 10)}
                         </p>
                       </td>
-                      <td>+91 {obj.mobile} </td>
+                      <td>{obj.mobile ? `+91 ${obj.mobile}` : "Not available"} </td>
                       <td>
                         <p>
                           <a onClick={() => blockUser(obj._id)}>

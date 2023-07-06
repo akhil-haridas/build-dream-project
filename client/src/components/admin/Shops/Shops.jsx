@@ -145,7 +145,9 @@ const Shops = () => {
                           {obj.createdAt.slice(0, 10)}
                         </p>
                       </td>
-                      <td>+91 {obj.mobile} </td>
+                      <td>
+                        {obj.mobile ? `+91 ${obj.mobile}` : "Not available"}
+                      </td>
                       <td>
                         <p>
                           <a onClick={() => blockUser(obj._id)}>
