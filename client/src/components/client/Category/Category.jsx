@@ -14,10 +14,10 @@ const navigate = useNavigate()
 const filter = (data) => {
   if (data.role === "PROFESSIONAL") {
     localStorage.setItem("prof", data.name);
-    navigate('/shops')
+    navigate("/professionals");
   } else if (data.role === "SHOP") {
     localStorage.setItem("shopf", data.name);
-    navigate("/professionals");
+    navigate("/shop");
   }
 };
 

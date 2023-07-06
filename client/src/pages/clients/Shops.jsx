@@ -93,9 +93,10 @@ const Shops = () => {
 
        const shopf = localStorage.getItem("shopf");
        if (shopf) {
-         const filteredData = filteredData.filter(
+         filteredData = filteredData.filter(
            (professional) => professional.category === shopf
          );
+         localStorage.removeItem("shof");
        } 
     }
 

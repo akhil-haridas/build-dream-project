@@ -93,9 +93,10 @@ const Professionals = () => {
 
        const prof = localStorage.getItem("prof");
        if (prof) {
-         const filteredData = filteredData.filter(
+         filteredData = filteredData.filter(
            (professional) => professional.category === prof
          );
+         localStorage.removeItem("prof");
        } 
     }
 
