@@ -70,14 +70,14 @@ const Magazine = ({ data, categories, requirements }) => {
                     <div className="col-lg-12" key={index}>
                       <div className="blog-post">
                         <div className="blog-thumb">
-                          <img
-                           
-                            alt=""
-                            src={`${imageAPI}${item.image}`}
-                          />
+                          <img alt="" src={`${imageAPI}${item.image}`} />
                         </div>
                         <div className="down-content">
-                          <span>{item.user.expertise}</span>
+                          <span>
+                            {item.user?.expertise
+                              ? item.user?.expertise
+                              : item.user?.category}
+                          </span>
                           <a href="post-details.html">
                             <h4>{item.title}</h4>
                           </a>
