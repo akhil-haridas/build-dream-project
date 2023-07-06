@@ -148,11 +148,6 @@ const Professionals = () => {
           <div className="team">
             <div className="row flex flex-wrap ml-[15px]">
               <Profiles data={filter} />
-              <Profiles data={filter} />
-              <Profiles data={filter} />
-              <Profiles data={filter} />
-              <Profiles data={filter} />
-              <Profiles data={filter} />
             </div>
           </div>
         </div>

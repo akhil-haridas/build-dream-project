@@ -29,7 +29,10 @@ const ShopProfile = ({data}) => {
         >
           <div className="team-member">
             <div className="flipper">
-              <div className="team-member-front">
+              <div
+                className="team-member-front"
+                style={{ boxShadow: "0px 0px 6px rgba(0, 0, 0, 1.1)" }}
+              >
                 <div className="team-member-thumb">
                   <img
                     src={`${imageAPI}${obj.image}`}
@@ -48,23 +51,29 @@ const ShopProfile = ({data}) => {
                   {obj.category}
                 </p>
               </div>
-              <div className="team-member-back">
+              <div
+                className="team-member-back"
+                style={{
+                  boxShadow: "0px 0px 6px rgba(0, 0, 0, 1.1)",
+                  minWidth: "250px",
+                }}
+              >
                 <div className="team-member-info">
                   <h3 className="team-member-back-name">{obj.name}</h3>
 
                   <p className="team-member-back-position">{obj.category}</p>
                   <p className="team-member-back-info">{obj.bio}</p>
                   <div className="social-icons small">
-                    <a href="#" className="rectangle">
+                    <a href={obj?.facebook} className="rectangle">
                       <i className="fa fa-facebook" />
                     </a>
-                    <a href="#" className="rectangle">
+                    <a href={obj?.twitter} className="rectangle">
                       <i className="fa fa-twitter" />
                     </a>
-                    <a href="#" className="rectangle">
+                    <a href={obj?.linkedin} className="rectangle">
                       <i className="fa fa-linkedin" />
                     </a>
-                    <a href={obj.insta} className="rectangle">
+                    <a href={obj?.insta} className="rectangle">
                       <i className="fa fa-instagram" />
                     </a>
                   </div>

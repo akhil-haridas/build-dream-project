@@ -64,16 +64,16 @@ const Profiles = ({ data }) => {
                   </p>
                   <p className="team-member-back-info">{profile.bio}</p>
                   <div className="social-icons small">
-                    <a href="#" className="rectangle">
+                    <a href={profile?.facebook} className="rectangle">
                       <i className="fa fa-facebook" />
                     </a>
-                    <a href="#" className="rectangle">
+                    <a href={profile?.twitter} className="rectangle">
                       <i className="fa fa-twitter" />
                     </a>
-                    <a href="#" className="rectangle">
+                    <a href={profile?.linkedin} className="rectangle">
                       <i className="fa fa-linkedin" />
                     </a>
-                    <a href="#" className="rectangle">
+                    <a href={profile?.insta} className="rectangle">
                       <i className="fa fa-instagram" />
                     </a>
                   </div>
