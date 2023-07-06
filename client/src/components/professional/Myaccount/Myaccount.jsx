@@ -45,6 +45,7 @@ const Myaccount = () => {
       .then((response) => {
         setData(response.data.data);
         setExpertType(response.data.data.employmentType);
+        setName(response.data.data.name);
         if (response.data.data.image) setShow(true);
       })
       .catch((error) => {
@@ -73,6 +74,8 @@ const Myaccount = () => {
       .then((response) => {
         const result = response.data.user;
         setData(result);
+          alert("profile updated");
+          window.location.reload();
       })
       .catch((error) => {
         console.error(error);
@@ -107,6 +110,8 @@ const Myaccount = () => {
       .then((response) => {
         const result = response.data.user;
         setData(result);
+          alert("profile updated");
+          window.location.reload();
       })
       .catch((error) => {
         console.error(error);
@@ -134,6 +139,8 @@ const Myaccount = () => {
       .then((response) => {
         const result = response.data.user;
         setData(result);
+        alert("profile updated");
+        window.location.reload();
       })
       .catch((error) => {
         console.error(error);
@@ -279,7 +286,6 @@ const Myaccount = () => {
                       <input
                         type="text"
                         className="form-control mb-1"
-                        placeholder={data.name}
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                       />
