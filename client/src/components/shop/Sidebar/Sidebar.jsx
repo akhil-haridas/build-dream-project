@@ -9,6 +9,7 @@ const Sidebar = ({ active }) => {
     const userName = useSelector((state)=> state.shop.shopName)
   const [cookie, setCookie, removeCookie] = useCookies(["jwt"]);
   const logout = () => {
+      localStorage.clear()
     removeCookie("jwt");
     dispatch(shopActions.shopLogout());
     navigate("/shop/login");

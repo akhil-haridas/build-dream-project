@@ -9,6 +9,7 @@ const Sidebar = ({ active }) => {
   const userName = useSelector((state) => state.professional.professionalName);
   const [cookie, setCookie, removeCookie] = useCookies(["jwt"]);
   const logout = () => {
+    localStorage.removeItem()
     removeCookie("jwt");
     dispatch(professionalActions.professionalLogout());
     navigate("/professional/login");
